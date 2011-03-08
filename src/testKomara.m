@@ -15,11 +15,7 @@ start(vid);
 
 %% Cist data
 
-im = getdata(vid,1); % precteni snimku z bufferu
-
-im_debay(:,:,1) = im(2:2:end,1:2:end);
-im_debay(:,:,2) = im(1:2:end,1:2:end)/2 + im(2:2:end,2:2:end)/2;
-im_debay(:,:,3) = 6.5 * im(1:2:end,2:2:end);
+im = getOneImage(vid);
 
 %% Inicializace Pan-Tilt jednotky:
 
