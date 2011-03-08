@@ -19,9 +19,7 @@ im = getOneImage(vid);
 
 %% Inicializace Pan-Tilt jednotky:
 
-ser = serial('COM1');
-set(ser,'BaudRate',57600);
-fopen(ser);
+ser = servoInit();
 
 %% Pohyb Pan-Tilt jednotky:
 
@@ -37,6 +35,5 @@ delete(vid);
 
 %% Uklid spojeni s Pan-Tilt jednotkou
 
-fclose(ser);
-delete(ser);
+servoClose(ser);
 
