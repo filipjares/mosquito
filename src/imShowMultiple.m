@@ -1,6 +1,11 @@
 function imShowMultiple(images)
+    % Shows images (uses imshow/subplot+imshow). In fact this function is redundant
+    % as there is imaqmontage in the Image Acquistion Toolbox which does something
+    % similar in a better way.
 
-    images = uint8(images); % TODO: this could be conditional
+    if (~isa(images, 'uint8'))
+        images = uint8(images);
+    end
     
     switch ndims(images)
         case 3
@@ -15,6 +20,8 @@ function imShowMultiple(images)
                 %subimage(img);
                 imshow(img);
             end
+        otherwise
+            error('Invalid argument size. Supported is size of 3 (single image) and 4 (sequence of images)');
     end
 
 end
