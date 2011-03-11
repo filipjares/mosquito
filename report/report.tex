@@ -1,0 +1,68 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+
+\title{Zpráva k seminární úloze z předmětu\\ Inteligentní robotika \\ {\small Zpráva č. 1 - Studie projektu}}
+\author{Filip Jareš, Lenka Mudrová}
+\date{9.3.2011}
+
+\begin{document}
+
+\maketitle
+
+\section*{Zadání úlohy}
+Úloha je motivována článkem Backyard star wars \cite{zadani}.
+
+Pro naše účely je úloha zjednodušena. Komár je nahrazen pohyblivou skvrnou na monitoru počítače. Monitor je sledován pan-tilt kamerou (kamerou na pohyblivém závěsu). Vy můžete ovládat otáčení kamery okolo svislé (azimut, pan) i vodorovné (elevace, tilt) osy. Vaším úkolem je zaměřit komára do záměrného kříže. Zásah zdokumentujete snímkem, kde obraz komára bude uprostřed obrazu z kamery.
+
+K dispozici budete mít dvě pracoviště, jedno s IP kamerou, kde snímání obrazu i pohyb kamery je ovládán přes http příkazy. Druhé pracoviště je s USB kamerou a pohybem ovládaným přes RS-232. Před začátkem práce se musíte rozhodnout, kterou z úloh budete řešit.
+
+Úlohy budou v různých obtížnostech, kde obtížnost je daná v podstatě rychlostí letu komára.
+
+\section{Analýza problému}
+Úloha se skládá z několika oblastí, především je zde zastoupena oblast počítačového vidění, kdy je nutné sejmout obrázek z kamery, zpracovat ho a detekovat v obraze komára. Další oblastí, která je zastoupena, je řízení, kdy je nutné ovládat soustavu serv, zvážit vliv dynamiky kamery, případně provést identifikaci soustavy. Řízení se také projeví v samotném ovládání kamery tak, aby byla schopna co nejlépe sledovat komára, pro lepší funkci je nutné vymyslet a naimplementovat predikci letu komára. V neposlední řadě je v problému zastoupena též robotika, kdy je potřeba pracovat se soustavou serv, s jejich natočením v jedné soustavě vůči soustavě, ve které se pohybuje komár.
+
+\section{Rozbor dílčích oblastí}
+
+V této sekci budou popsány dílčí oblasti, jejich detailní popis a plánový postup řešení. 
+
+\subsection{Seznámení s úlohou}
+
+V první řadě bylo potřeba provést seznámení s úlohou, podle návodu na stránkách cvičení \cite{web} jsme si ozkoušeli vyčíst obrázek z kamery. Dále byl ozkoušen pohyb se soustavou serv. Po prvotním nastudování úlohy jsme si vyjasnili dílčí postup a vyjasnili problémy v jednotlivých částech a také to, jak je řešit, rozbor daných pod oblastí je nastíněn v následujícíh podsekcích.
+
+\subsection{Ovládání mechanické soustavy}
+Komár se pohybuje ve ,,světě'' monitoru, pracujeme s obrázkem, kde standartní přístup je ten, že počátek souřadného systému je umístěn v levém horním rohu, kladný směr osy x je ve směru šířky obrázku, kladný směr osy y je ve směru výšky. Naopak kamera se pohybuje ve svém souřadném systému, soustava je ovládána horizontálním a vertikálním natočením. Je tedy potřeba nalézt trans-\\formaci mezi jednotlivými soustavami a to z důvodu, aby bylo snadné ovládat kameru na základě informace o poloze komára.
+
+\subsection{Dynamika mechanické soustavy}
+Byla provedena série testů, na počátku byla kamera nastavena na střed obrazovky, na které byl nahrán kalibrační obrazec se záměrným křížem. Po té byla kamera vychýlena o maximum svého záběru a následně byla servům nastavena původní hodnota. Jako výsledek experimentu bylo pozorováno, jak se liší pozice středu sejmutého obrazu od středu záměrného kříže. Tento pokus byl několikrát (řádově desetkrát) zopakován. Závěrem tohoto pozorování je, že se střed obrazu posouval a došli jsme k závěru, že detekce standartního komára bude problema-\\tická. Bude tedy nutné se zabývat dynamikou soustavy, z identifikovat její parametry a vzít je při řízení pohybu v úvahu.
+
+\subsection{Detekce komára}
+Pro detekci komára je nutné umět vyčíst obrázek z kamery, což bylo provedeno při nastudování úlohy, tento obrázek se předá dílčí funkci, ta by měla vykonávat následující úkony:
+
+\begin{itemize}
+ \item Prahování - detekce míst, která mají všechny tři složky pixelu menší než určitou mez, která se musí experimentálně nastavit tak, aby dobře detekovala komára. Očekávaná mez je pod hodnotu 50.
+ \item Rozhodnutí o daných oblastech - Na zdetekovaných oblastech z prvního kroku rozhodujeme, která má menší výšku či šířku než maximální velikost komára, tím se zahodí podlouhlé okraje, prakticky jediná zbylá oblast by měl být komár. (pozorovali jsme, že komár si nikdy ,,nesedne`` na~kraj obrazovky, ale vždy tam je bílý prostor). U dané oblasti víme, kde se nachází, spočteme, jak je oblast velká a tím známe střed komára v~soustavě monitoru.
+\end{itemize}
+
+\subsection{Řízení kamery}
+Na základě detekce komára a nalezené transformace mezi pracovními soustavami, bude soustava s kamerou řízená tak, aby se komár pohyboval ve středu sejmutého obrázku. Řízení ovšem nemůže být skokové, ale plynulé a musí být vzata v úvahu dynamika soustavy. Pro lepší funkci bude implementována predikce pohybu komára.
+
+\subsection{Predikce pohybu komára}
+
+Základním přístupem predikce je uchovávat si minulou hodnotu pozice komára a porovnávat ji se současnou. Tím získáme základní směr letu komára. Model komára zachovává fyzikální podstatu letu - tedy zrychluje a zpomaluje s konečným zrychlením a také razantně nemění směr (okamžité zatočení, okamžité couvání apod.), to predikci pomůže. Jako další rozšíření plánujeme využít pozorování, že pokud se komár přibližuji k hraně monitoru, tak zpomaluje a je očekáváno, že se vydá na cestu zpět. Tedy pokud budeme v obrazu kamery detekovat i hranu monitoru, plánujeme tuto informaci využít k lepší predikci pohybu.
+
+\section{Shrnutí}
+
+Byla provedena studie problematiky a její proveditelnosti. V základní fázi jsme se seznámili s konkrétní realizací úlohy a vybrali jsme si pracoviště číslo dva. Provedli jsme několik základních testů na ověření mechanické soustavy a na schopnost vyčítání obrazových dat za účelem lepšího seznámení se s úlohou a odpovězení na problematické otázky. Byl navržen postup dílčích úkonů a jejich realizace.
+
+V další fázi zpracování úlohy budou dílčí kroky iplementovány a ozkoušeny tak, aby v druhé fázi kontroly probíhala detekce a řízení s  uspokojivým výsledkem.
+
+\section*{Použitá literatura}
+\bibliographystyle{czechiso}
+\bibliography{report}
+
+
+
+
+
+
+\end{document}
