@@ -33,7 +33,7 @@ function [data time meta] = moveToPositionAndTakePictures(x, y, framesCount)
     pause(0.1);
     % take a picture and show it
     trigger(vid);
-    wait(vid, 5, 'logging');
+    wait(vid, framesCount*0.1, 'logging');
 %     if (framesCount > 1)
 %         data = zeros(480, 640, 3, framesCount);
 %         for i = 1:framesCount
