@@ -1,5 +1,6 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[utf8x]{inputenc}
+\usepackage{czech}
 
 \title{Zpráva k seminární úloze z předmětu\\ Inteligentní robotika \\ {\small Zpráva č. 1 - Studie projektu}}
 \author{Filip Jareš, Lenka Mudrová}
@@ -10,6 +11,8 @@
 \maketitle
 
 \section*{Zadání úlohy}
+{\small \textit{Text je převzat z webových stránek předmětu \cite{web}.}}
+
 Úloha je motivována článkem Backyard star wars \cite{zadani}.
 
 Pro naše účely je úloha zjednodušena. Komár je nahrazen pohyblivou skvrnou na monitoru počítače. Monitor je sledován pan-tilt kamerou (kamerou na pohyblivém závěsu). Vy můžete ovládat otáčení kamery okolo svislé (azimut, pan) i vodorovné (elevace, tilt) osy. Vaším úkolem je zaměřit komára do záměrného kříže. Zásah zdokumentujete snímkem, kde obraz komára bude uprostřed obrazu z kamery.
@@ -48,7 +51,7 @@ Na základě detekce komára a nalezené transformace mezi pracovními soustavam
 
 \subsection{Predikce pohybu komára}
 
-Základním přístupem predikce je uchovávat si minulou hodnotu pozice komára a porovnávat ji se současnou. Tím získáme základní směr letu komára. Model komára zachovává fyzikální podstatu letu - tedy zrychluje a zpomaluje s konečným zrychlením a také razantně nemění směr (okamžité zatočení, okamžité couvání apod.), to predikci pomůže. Jako další rozšíření plánujeme využít pozorování, že pokud se komár přibližuji k hraně monitoru, tak zpomaluje a je očekáváno, že se vydá na cestu zpět. Tedy pokud budeme v obrazu kamery detekovat i hranu monitoru, plánujeme tuto informaci využít k lepší predikci pohybu.
+Po té, až bude fungovat základní detekce komára a řízení kamery, očekáváme, že se nám tímto základním přístupem nepodaří přesně snímat obrázky s komárem ve středu, tedy pro zlepšení bude implementována predikce pohybu komára. Základním přístupem je uchovávat si minulou hodnotu pozice komára a porovnávat ji se současnou. Tím získáme základní směr letu komára. Model komára zachovává fyzikální podstatu letu - tedy zrychluje a zpomaluje s konečným zrychlením a také razantně nemění směr (okamžité zatočení, okamžité couvání apod.), to predikci pomůže. Jako další rozšíření plánujeme využít pozorování, že pokud se komár přibližuji k hraně monitoru, tak zpomaluje a je očekáváno, že se vydá na cestu zpět. Tedy pokud budeme v obrazu kamery detekovat i hranu monitoru, plánujeme tuto informaci využít k lepší predikci pohybu.
 
 \section{Shrnutí}
 
@@ -56,8 +59,7 @@ Byla provedena studie problematiky a její proveditelnosti. V základní fázi j
 
 V další fázi zpracování úlohy budou dílčí kroky iplementovány a ozkoušeny tak, aby v druhé fázi kontroly probíhala detekce a řízení s  uspokojivým výsledkem.
 
-\section*{Použitá literatura}
-\bibliographystyle{czechiso}
+\bibliographystyle{splncs03}
 \bibliography{report}
 
 
