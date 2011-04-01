@@ -8,9 +8,11 @@ function [x, y] = findMosquitoInImage(img)
     %candidates = (grayscale <= threshold);
     candidates = (grayscale < 100);
     
-    props = regionprops(bwlabel(candidates), 'Area', 'Centroid');
+    props = regionprops(bwlabel(candidates), 'Area', 'Centroid', 'MajorAxisLength');
     
     area = [props.Area];
+    majorAxis = [props.MajorAxisLength];
+    area(area > 5000 | majorAxis > 100) = 0; % max area of the mosquito is about 3000
     [num_pixels, index] = max(area);
     
     % TODO: to avoid recognizing border instead of mosquito,
@@ -25,5 +27,6 @@ function [x, y] = findMosquitoInImage(img)
         % Area of laser is too small to get past the threshold.
         x = NaN;
         y = NaN;
+    end
 
 end
