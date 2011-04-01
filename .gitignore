@@ -1,5 +1,13 @@
 
+# Vim backup
+*.sw[po]
 
+# Matlab backup
 *.m~
 *.asv
-*.sw[po]
+
+# Temporary LaTeX output
+report/*.log
+report/*.bbl
+report/*.blg
+report/*.aux
