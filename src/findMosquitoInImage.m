@@ -6,7 +6,7 @@ function [x, y] = findMosquitoInImage(img)
 
     %threshold = 1.25 * double(min(grayscale(:)));
     %candidates = (grayscale <= threshold);
-    candidates = (grayscale < 50);
+    candidates = (grayscale < 100);
     
     props = regionprops(bwlabel(candidates), 'Area', 'Centroid');
     
