@@ -3,6 +3,10 @@ function processNextFrame(vid, event)
     global ser x y;
 
     img = peekdata(vid, 1);
+    if (any(size(img) ~= [960 1280]))
+        disp('peekdata failed');
+        return;
+    end
     img = deBayerize(img);
     
     [newX, newY] = findMosquitoInImage(img);
