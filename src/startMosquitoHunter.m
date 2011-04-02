@@ -3,6 +3,10 @@
 
 global ser;
 global x y;
+global n gdata;
+
+gdata = uint8(zeros(480,640,3,20));
+n = 0;
 
 % TODO: this will be removed
 x = 121;
