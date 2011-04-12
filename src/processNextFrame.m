@@ -7,6 +7,8 @@ function processNextFrame(vid, event)
     
     global k;
     k = k+1;
+    
+    global huntStarted;
 
     [img time meta] = getdata(vid, 1);
     if (any(size(img) ~= [960 1280]))
@@ -23,19 +25,20 @@ function processNextFrame(vid, event)
     
     % TODO: use correct transformations
     if ~isnan(mAzimuth) & ~isnan(mInclination)
-        x = x + mAzimuth * 15;     % TODO: remove this magic number
-        y = y - mInclination * 15; % TODO: remove this magic number
+        huntStarted = true;
+        x = x + mAzimuth * 30;     % TODO: remove this magic number
+        y = y - mInclination * 30; % TODO: remove this magic number
         ptmove(ser, x, y);
         str = sprintf('Mosquito found at [%.2f, %.2f] in picture at [%.2f, %.2f].', x, y, newX, newY);
         disp(str);
-        logData(k, img, time, meta, [x y], [newX newY], fMIIDuration);
     else
         disp('Nothing found');
     end
+    
+    logData(k, img, time, meta, [x y], [newX newY], fMIIDuration);
 
     %imshow(addCrosshairToThePicture(img));
     %hold on; plot(newX, newY, 'bo'); hold off;
-    disp('processed one image');
     
     routineDuration(k) = toc(pNF);
 

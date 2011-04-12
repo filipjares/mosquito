@@ -1,7 +1,12 @@
 function logData(k, img, time, meta, pos, mosquitoInImage, mosquitoInImageDuration)
 
     global N n nk gdata gtime gmeta gPos gMosquitoInImage findMosquitoInImageDuration;
+    global huntStarted;
 
+    if (huntStarted == false)
+        return;
+    end
+    
     n = n+1;
     
     if (n <= N)

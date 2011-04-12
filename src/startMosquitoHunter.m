@@ -21,7 +21,14 @@ k = 0;
 routineDuration = zeros(N, 1);
 findMosquitoInImageDuration = zeros(N, 1);
 
-% TODO: this will be removed
+%%
+
+global huntStarted;
+huntStarted = false; % was mosquito ever found in any image?
+
+%%
+
+% set initial camera (pan-tilt) position
 x = 121;
 y = 124;
 
