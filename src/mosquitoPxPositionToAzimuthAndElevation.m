@@ -1,11 +1,18 @@
 function [azimuth, inclination] = mosquitoPxPositionToAzimuthAndElevation(x, y)
 
+    % constants
     imageCenterX = 320;
     imageCenterY = 240;
+    d = 540;  % camera - monitor distance [mm]
+    a = 100/397.6; % coefficient [mm/pixel]
     
+    % computation
     if ~isnan(x) & ~isnan(y)
-        azimuth = atan( (x-imageCenterX) * 100/397.6 / 540 );
-        inclination = -atan( (y - imageCenterY) * 100/397.6 / 540 );
+        dx = x-imageCenterX;
+        dy = y - imageCenterY;
+        d2 = sqrt(d^2 + dx);
+        azimuth = atan( dx * a / d );
+        inclination = -atan( dy * a / d2 );
     else
         azimuth = NaN;
         inclination = NaN;
