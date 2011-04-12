@@ -1,25 +1,26 @@
 function processNextFrame(vid, event)
 
-    pNF = tic;
-
-    global ser x y;
+    pNF = tic;                  % will measure this function's call duration
     global routineDuration;
-    
-    global k;
-    k = k+1;
-    
-    global huntStarted;
 
+    global ser x y;             % serial port object and actual pan-tilt position
+    global k;                   % number of pictures acquired
+    global huntStarted;         % was mosquito ever found?
+
+    % take picture
     [img time meta] = getdata(vid, 1);
     if (any(size(img) ~= [960 1280]))
         disp('getdata failed');
         return;
     end
     img = deBayerize(img);
+    k = k+1;
     
-    fMII = tic;
+    % find mosquito in the taken image
+    fMII = tic;                 % measure findMosquitoInImage duration
     [newX, newY] = findMosquitoInImage(img);
     fMIIDuration = toc(fMII);
+    
     % mosquito's azimuth and inclination are relative to the camera frame
     [mAzimuth, mInclination] = mosquitoPxPositionToAzimuthAndElevation(newX, newY);
     
@@ -35,11 +36,11 @@ function processNextFrame(vid, event)
         disp('Nothing found');
     end
     
+    % save the image itself and other useful information to global variables
     logData(k, img, time, meta, [x y], [newX newY], fMIIDuration);
+    routineDuration(k) = toc(pNF);
 
     %imshow(addCrosshairToThePicture(img));
     %hold on; plot(newX, newY, 'bo'); hold off;
-    
-    routineDuration(k) = toc(pNF);
 
 end
