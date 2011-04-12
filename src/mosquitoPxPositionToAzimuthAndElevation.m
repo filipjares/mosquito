@@ -12,7 +12,7 @@ function [azimuth, inclination] = mosquitoPxPositionToAzimuthAndElevation(x, y)
         dy = y - imageCenterY;
         d2 = sqrt(d^2 + dx);
         azimuth = atan( dx * a / d );
-        inclination = -atan( dy * a / d2 );
+        inclination = atan( dy * a / d2 );
     else
         azimuth = NaN;
         inclination = NaN;

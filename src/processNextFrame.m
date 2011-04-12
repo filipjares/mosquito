@@ -27,7 +27,7 @@ function processNextFrame(vid, event)
     if ~isnan(mAzimuth) & ~isnan(mInclination)
         huntStarted = true;
         x = x + mAzimuth * 30;     % TODO: remove this magic number
-        y = y - mInclination * 30; % TODO: remove this magic number
+        y = y + mInclination * 30; % TODO: remove this magic number
         ptmove(ser, x, y);
         str = sprintf('Mosquito found at [%.2f, %.2f] in picture at [%.2f, %.2f].', x, y, newX, newY);
         disp(str);
