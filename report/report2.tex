@@ -26,9 +26,9 @@
 
 \section{Řešení problému}
 
-Rámec programu je tvořen zpětnovazební regulační smyčkou pro řízení polohy kamery. Vstupem regulátoru je nejnovější získaný obrázek z kamery a jeho výstupem je nová poloha kamery. Schematicky je to znázorněno na obrázku \ref{fig:rid_system}.
+Rámec programu je tvořen zpětnovazební regulační smyčkou pro řízení polohy kamery. Vstupem regulátoru je nejnovější získaný obrázek z kamery a jeho výstupem je nová poloha kamery. Schématicky je to znázorněno na obrázku \ref{fig:rid_system}.
 Před samotným výpočtem nové polohy kamery je vyhodnocen nově získaný obraz. Postup jeho zpracování je znázorněn na obrázku \ref{fig:kamera}.
-Nejprve je určena poloha komára v obraze (funkce \textit{findMosquitoInImage}) v pixelových souřadnicích. Na základě odchylky této polohy od středu obrázku potom funkce \textit{mosquitoPxPositionToAzimuthAndElevation} počítá odhad úhlů, o které je komár vychýlen od optické osy kamery.
+Nejprve je určena poloha komára v obraze (funkce \textit{findMosquitoInImage}) v pixelových souřadnicích. Na základě odchylky této polohy od středu obrázku potom funkce \textit{mosquitoPxPositionToAzimuthAndElevation} počítá odhad úhlů, o které je komár vychýlen od optické osy kamery. Pro urychlení celé smyčky jsou data pouze logována, nikoliv zobrazována. Uživatel si snadno tato data přehraje offline.
 
 \begin{figure}[!h]
     \centering
@@ -57,7 +57,7 @@ Jako další krok se zincializuje kamera a s periodou $X? s$ se s využitím cal
 \vspace{0.5cm}
 \textit{processNextFrame}
 
-Tato funkce pracuje s jedním obrazem získaným z kamery, upraví ho využitím deBayrizace. Takto upravený obraz předá funkci \textit{findMosquitoInImage}, jejíž návratové hodnoty jsou $x, y$ souřadnice středu komára v obraze. Tyto hodnoty jsou předány funkci \textit{mosquitoPxPositionToAzimuthAndElevation}, která vypočte hodnoty azimutu a elevace. V těle funkce \textit{processNextFrame} je implementován PI regulátor. Pozice kamery je saturována na hodnoty, ve kterých je očekáván komár, tedy na hodnoty odpovídající kraji monitoru. 
+Tato funkce pracuje s jedním obrazem získaným z kamery, upraví ho využitím de bayerizace. Takto upravený obraz předá funkci \textit{findMosquitoInImage}, jejíž návratové hodnoty jsou $x, y$ souřadnice středu komára v obraze. Tyto hodnoty jsou předány funkci \textit{mosquitoPxPositionToAzimuthAndElevation}, která vypočte hodnoty azimutu a elevace. V těle funkce \textit{processNextFrame} je implementován PI regulátor. Pozice kamery je saturována na hodnoty, ve kterých je očekáván komár, tedy na hodnoty odpovídající kraji monitoru. 
 
 \vspace{0.5cm}
 \textit{findMosquitoInImage}
@@ -65,7 +65,7 @@ Tato funkce pracuje s jedním obrazem získaným z kamery, upraví ho využitím
 K získání polohy komára v obrazu z kamery byl použit jednoduchý algoritmus využívající morfologických funkci Matlabovského Image Processing Toolboxu. Jedná se o funkce \textit{bwlabel} pro nalezení souvislých oblastí a funkce \textit{regionprops} pro určení délky (vlastnost \textit{MajorAxisLength}) a plochy (vlastnost \textit{Area}) těchto oblastí.
 
 %kdyz je to efektivnejsi, proc to nedelame? '' empiricky urcena hodnota? histogram se nelibil? '' jejíchž?
-Komár zobrazovaný na monitoru pracoviště je představován černým čtvercem na bílém pozadí. Barevná informace je proto zanedbávána a použit je pouze obrázek ve stupních šedi (efektivnější by bylo použít pouze jednu z barevných složek). Tento obrázek je následně oprahován, přičemž jako mez je použita empiricky určená hodnota. V oprahovaném binárním obrázku jsou nalezeny souvislé oblasti právě využitím funkce \textit{bwlabel}. Z nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto rozhodnutí jsou použity vlastnosti \textit{MajorAxisLenght} a \textit{Area} oblastí. Jsou vyloučeny takové oblasti, jejíchž plocha je větší než $3000$ pixelů nebo jejich délka je více než $50$ pixelů. Tyto hodnoty byly nastaveny na základě maximálních parametrů komára a dostatečné rezervy. Ze zbývajících oblastí je vybrána ta, která má největší plochu. Pro tuto oblast je určena poloha středu v pixelových souřadnicích a tato infromace je návratová hodnota funkce \textit{findMosquitoInImage}.
+Komár zobrazovaný na monitoru pracoviště je představován černým čtvercem na bílém pozadí. Barevná informace je proto zanedbávána a použit je pouze obrázek ve stupních šedi (efektivnější by bylo použít pouze jednu z barevných složek). Tento obrázek je následně porovnán s empiricky určeným prahem, oblasti s jasem menším vykazují barevnou podobnost s hledaným komárem. V tomto binárním obrázku jsou nalezeny souvislé oblasti právě využitím funkce \textit{bwlabel}. Z nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto rozhodnutí jsou použity vlastnosti oblastí \textit{MajorAxisLenght} a \textit{Area}. Jsou vyloučeny takové oblasti, jejichž plocha je větší než $3000$ pixelů nebo jejichž délka je více než $50$ pixelů. Tyto hodnoty byly nastaveny na základě maximálních parametrů komára a dostatečné rezervy. Ze zbývajících oblastí je vybrána ta, která má největší plochu. Pro tuto oblast je určena poloha středu v pixelových souřadnicích a tato infromace je návratová hodnota funkce \textit{findMosquitoInImage}.
 
 %Z barevného obrázku se nejprve vytvoří obrázek šedotónový uložený ve formátu uint8. Po té se naleznou oblasti, ve kterých je podezření na komára na základě znalosti, že komár je tmavý obrazec na světlém pozadí. Tyto oblasti se vyhodnocují na základě histogramu obrázku, hodnoty světlejší než intenzita 200 se zahodí. Tato hodnota byla experimentálně určena, s dostatečnou jistotou oblast komára není světlejší, maximální světlost byla pozorována pod hodnotou 100. Ve zbylé části histogramu se vyhodnotí maximum četností. Práh pro detekci komára je stanoven jako dvojnásobek této hodnoty – dostatečné pokrytí rozložení intenzit kolem maxima. 
 
@@ -78,11 +78,15 @@ V této funkci se přepočtou souřadnice v pixelech obrazu na informaci o azimu
 
 \subsection{Pomocné metody}
 
-\textit{addCrosshairToThePicture}
+\begin{itemize}
+ \item \textit{addCrosshairToThePicture} Do středu obrázku vykreslí kříž zadané tloušťky. 
+ \item \textit{deBayerize} Provede deBayerizaci obrázku.
+\item \textit{initLoggingVariables} Zinicializují se proměné potřebné pro logování.
+ \item \textit{logData} Ukládá obraz, pozici komára, posun kamer, potřebný čas k běhu a další proměné pro zpětné testování funkcí.
+\item \textit{playResults} Přehraje zalogované obrázky s vykresleným záměrným křížem.
+\item \textit{stopMosquitoHunter} Ukončí práci s kamerou a servo mechanismem.
 
-Vstup:
-Do středu obrázku vykreslí kříž zadané tloušťky. 
-
+\end{itemize}
 
 \section{Experimentální výsledky}
 
