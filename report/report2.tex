@@ -62,11 +62,11 @@
 		kamery. Vstupem regulátoru je nejnovější získaný obrázek z~kamery a jeho
 		výstupem je nová poloha kamery. Schématicky je to znázorněno na
 		obrázku~\ref{fig:ridiciSystem}.  Před samotným výpočtem nové polohy kamery
-		je vyhodnocen nově získaný obraz. Postup jeho zpracování je znázorněn na
+		je vyhodnocen nově zís\-ka\-ný obraz. Postup jeho zpracování je znázorněn na
 		obrázku~\ref{fig:zpracovaniObrazu}.  Nejprve je určena poloha komára v~obraze
 		(funkce \textit{findMosquitoInImage}) v~pixelových sou\-řad\-ni\-cích. Na základě odchylky
 		této polohy od středu obrázku potom funkce
-		\textit{mosquito\-Px\-PositionToAzimuthAndElevation} počítá odhad úhlů, o~které je
+		\textit{mos\-quito\-Px\-PositionToAzimuthAndElevation} počítá odhad úhlů, o~které je
 		komár vy\-chý\-len od optické osy kamery. Pro urychlení celé smyčky jsou data pouze
 		logována, nikoliv zobrazována. Uživatel si snadno tato data přehraje offline.
 
@@ -141,7 +141,7 @@
 		bílém pozadí. Barevná informace je proto zanedbávána a použit je pouze obrázek
 		ve stupních šedi (efektivnější by bylo použít pouze jednu z~barevných složek).
 		Tento obrázek je následně porovnán s~empiricky určeným prahem, tím vznikne binární maska s~oblastmi, 
-		které vykazují barevnou podobnost s~hledaným komárem. 
+		které vykazují barevnou podobnost s~hle\-da\-ným komárem. 
 		%oblasti s jasem
 		%menším vykazují barevnou podobnost s hledaným komárem.
 	    
@@ -186,10 +186,12 @@ Z~nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto
 		\end{itemize}
 
 \section{Experimentální výsledky}
+
 		Cílem etapy bylo zoptimalizovat detekci komára v~obraze. 
 		S~využitím Matlabovských funkcí \textit{tic} a \textit{toc} byl měřen čas vykonávání funkce, 
 		tento experiment byl třicetkrát zopakován a naměřený čas byl zprůměrován, funkce v~průměru trvala $0,08 s$. 
-		Minimální perioda s~jakou je možné získat obrázky z~kamery je $0,067 s$, proto by bylo potřeba běh funkce ještě více zrychlit, bohužel z~vyzkoušených algoritmů žádný neodpovídal lépe daným požadavkům. 
+		Minimální perioda s~jakou je možné získat obrázky z~kamery je $0,067 s$, proto by bylo potřeba běh funkce
+		ještě více zrychlit, bohužel z~vy\-zkou\-še\-ných algoritmů žádný neodpovídal lépe daným požadavkům. 
 
 		V~první etapě byl pro regulaci implementován pouze jednoduchý P regulátor, což mělo za následek, 
 		že kamera byla vždy pozadu za skutečnou pozicí komára. Přidáním integrační složky se dosáhlo zlepšení tohoto stavu. 
