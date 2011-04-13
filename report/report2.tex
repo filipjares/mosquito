@@ -53,9 +53,10 @@
 
 		Oproti první etapě nastaly především změny v regulátoru, primitivní P regulátor
 		byl rozšířen o integrační složku a obě konstanty byly důkladněji naladěny řadou
-		provedených testů. Dále v souladu se zadáním druhé etapy byla vylepšena funkce
-		\textit{findMosquitoInImage} o správnou detekci okrajů obrazovky a její kód byl
-		optimalizován. Program byl změněn tak, aby sejmuté obrázky nevykresloval, 
+		provedených testů. Dále byla v souladu se zadáním druhé etapy vylepšena funkce
+		pro určení polohy komára v obraze z kamery tak, aby si správně poradila s případnou
+		přítomností okrajů obrazovky ve snímku a kód této funkce byl optimalizován.
+		Program byl změněn tak, aby sejmuté obrázky nevykresloval,
 		ale pouze je zaznamenával a tím se jeho běh zrychlil. Pro zpětné (\uv{offline}) vizuální 
 		vyhodnocení úspěšnosti \uv{sestřelu} byla implemtována funkce \textit{playResults},
 		která zobrazí sekvenci zaznamenaných snímků.
