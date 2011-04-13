@@ -140,8 +140,12 @@
 		Komár zobrazovaný na monitoru pracoviště je představován černým čtvercem na
 		bílém pozadí. Barevná informace je proto zanedbávána a použit je pouze obrázek
 		ve stupních šedi (efektivnější by bylo použít pouze jednu z barevných složek).
-		Tento obrázek je následně porovnán s empiricky určeným prahem, oblasti s jasem
-		menším vykazují barevnou podobnost s hledaným komárem. V tomto binárním obrázku
+		Tento obrázek je následně porovnán s empiricky určeným prahem, tím vznikne binární maska s oblastmi, 
+		které vykazují barevnou podobnost s hledaným komárem. 
+		%oblasti s jasem
+		%menším vykazují barevnou podobnost s hledaným komárem.
+	    
+		V této masce
 		jsou nalezeny souvislé oblasti právě využitím funkce \textit{bwlabel}. Z
 		nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto
 		rozhodnutí jsou použity vlastnosti oblastí \textit{MajorAxisLenght} a
@@ -195,7 +199,7 @@
 
 
 \section{Diskuze a Závěr}
-		Cíl druhé etapy byl naplněn, čas detekce komára v obraze považujeme za uspokojující, ale pro maximální rychlost smyčky je potřeba výpočet zrychlit. Do třetí etapy bychom rádi prostudovali další literaturu a upravili algoritmus tak, aby běh smyčky byl ještě rcyhlejší. 
+		Cíl druhé etapy byl naplněn, čas detekce komára v obraze považujeme za uspokojující, ale pro maximální rychlost smyčky je potřeba výpočet zrychlit. Do třetí etapy bychom rádi prostudovali další literaturu a upravili algoritmus tak, aby běh smyčky byl ještě rychlejší. 
 
 		Dále byl vylepšen regulátor přidáním integrační složky. Do třetí etapy bude regulátor upraven tak, 
 		aby komára dokázal bezpečně sledovat i při vyšších rychlostech.
