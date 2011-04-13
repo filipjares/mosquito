@@ -66,11 +66,11 @@
 
 		Rámec programu je tvořen zpětnovazební regulační smyčkou pro řízení polohy
 		kamery. Vstupem regulátoru je nejnovější získaný obrázek z kamery a jeho
-		výstupem je nová poloha kamery. Schématicky je to znázorněno na obrázku
-		\ref{fig:ridiciSystem}.  Před samotným výpočtem nové polohy kamery je vyhodnocen
-		nově získaný obraz. Postup jeho zpracování je znázorněn na obrázku
-		\ref{fig:zpracovaniObrazu}.  Nejprve je určena poloha komára v obraze (funkce
-		\textit{findMosquitoInImage}) v pixelových souřadnicích. Na základě odchylky
+		výstupem je nová poloha kamery. Schématicky je to znázorněno na
+		obrázku~\ref{fig:ridiciSystem}.  Před samotným výpočtem nové polohy kamery
+		je vyhodnocen nově získaný obraz. Postup jeho zpracování je znázorněn na
+		obrázku~\ref{fig:zpracovaniObrazu}.  Nejprve je určena poloha komára v obraze
+		(funkce \textit{findMosquitoInImage}) v pixelových souřadnicích. Na základě odchylky
 		této polohy od středu obrázku potom funkce
 		\textit{mosquitoPxPositionToAzimuthAndElevation} počítá odhad úhlů, o které je
 		komár vychýlen od optické osy kamery. Pro urychlení celé smyčky jsou data pouze
