@@ -37,14 +37,14 @@ Oproti první etapě nastaly především změny v regulátoru, primitivní P re
 
 \section{Řešení problému}
 
-Rámec programu je tvořen zpětnovazební regulační smyčkou pro řízení polohy kamery. Vstupem regulátoru je nejnovější získaný obrázek z kamery a jeho výstupem je nová poloha kamery. Schématicky je to znázorněno na obrázku \ref{fig:rid_system}.
-Před samotným výpočtem nové polohy kamery je vyhodnocen nově získaný obraz. Postup jeho zpracování je znázorněn na obrázku \ref{fig:kamera}.
+Rámec programu je tvořen zpětnovazební regulační smyčkou pro řízení polohy kamery. Vstupem regulátoru je nejnovější získaný obrázek z kamery a jeho výstupem je nová poloha kamery. Schématicky je to znázorněno na obrázku \ref{fig:ridiciSystem}.
+Před samotným výpočtem nové polohy kamery je vyhodnocen nově získaný obraz. Postup jeho zpracování je znázorněn na obrázku \ref{fig:zpracovaniObrazu}.
 Nejprve je určena poloha komára v obraze (funkce \textit{findMosquitoInImage}) v pixelových souřadnicích. Na základě odchylky této polohy od středu obrázku potom funkce \textit{mosquitoPxPositionToAzimuthAndElevation} počítá odhad úhlů, o které je komár vychýlen od optické osy kamery. Pro urychlení celé smyčky jsou data pouze logována, nikoliv zobrazována. Uživatel si snadno tato data přehraje offline.
 
 \begin{figure}[!h]
     \centering
      \includegraphics[width=1\columnwidth]{pics/schema_ridiciho_systemu}
-     \caption{Schéma řídícího systému\label{fig:rid_system}}
+     \caption{Schéma řídícího systému}\label{fig:ridiciSystem}
 \end{figure}
 
 
@@ -61,7 +61,7 @@ Jako další krok se zincializuje kamera a s periodou $X? s$ se s využitím cal
 \begin{figure}[!h]
     \centering
      \includegraphics[width=1\columnwidth]{pics/zpracovani_obrazu_z_kamery}
-     \caption{Zpracování obrazu z kamery\label{fig:rid_system}}
+     \caption{Zpracování obrazu z kamery\label{fig:zpracovaniObrazu}}
 \end{figure}
 
 
