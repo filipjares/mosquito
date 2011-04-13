@@ -24,6 +24,8 @@
 
 \section{Změny specifikace}
 
+Oproti první etapě nastaly především změny v regulátoru, primitivní P regulátor byl rozšířen o integrační složku a obě konstanty byly důkladněji naladěny řadou provedených testů. Dále v souladu se zadáním druhé etapy byla vylepšena funkce \textit{findMosquitoInImage}, především o správnou detekci okrajů obrazovky a rychlý běh funkce. Samotný program byl změněn tak, aby sejmuté obrázky nevykresloval, ale logoval je, tím se samotný běh zrychlil. Pro zpětné offline vyhodnocení úspěšnosti ,,sestřelu`` byla implemtována funkce \textit{playResults}.
+
 \section{Řešení problému}
 
 Rámec programu je tvořen zpětnovazební regulační smyčkou pro řízení polohy kamery. Vstupem regulátoru je nejnovější získaný obrázek z kamery a jeho výstupem je nová poloha kamery. Schématicky je to znázorněno na obrázku \ref{fig:rid_system}.
