@@ -24,9 +24,16 @@
 
 Úloha se skládá z několika oblastí, především je zde zastoupena oblast počítačového vidění, kdy je nutné sejmout obrázek z kamery, zpracovat ho a detekovat v obraze komára. Další oblastí, která je zastoupena, je řízení, celý program tvoří zpětnovazební smyčku, pro regulaci je použit PI regulátor. Pro lepší funkci je nutné najít a implemtovat vhodný způsob predikce pohybu komára. V neposlední řadě je v problému zastoupena robotika, kdy je potřeba pracovat se soustavou serv a počítat transformace souřadnic mezi obrazovkou a souřadným systémem serv.
 
+Regulace, tedy výpočet nové polohy kamery $x_{new}, y_{new}$ je řešena jako PI regulátor. Vypočte se rozdíl mezi skutečnou a žádanou hodnotou $err$ a do proměné $sum_e$ se tato odchylka přičítá, při čemž její počáteční hodnota je nulová. Proměné $x, y$ jsou souřadnice aktuální polohy kamery.
+
+$$x_{new} = x + P\cdot err + I\cdot sum_e$$
+$$y_{new} = y + P\cdot err + I\cdot sum_e$$
+
+Do třetí etapy regulátor bude vylepšen o naladění $P, I$ složek pro každou osu zvlášť a doplnění o antiwind-up. 
+
 \section{Změny specifikace}
 
-Oproti první etapě nastaly především změny v regulátoru, primitivní P regulátor byl rozšířen o integrační složku a obě konstanty byly důkladněji naladěny řadou provedených testů. Dále v souladu se zadáním druhé etapy byla vylepšena funkce \textit{findMosquitoInImage}, především o správnou detekci okrajů obrazovky a rychlý běh funkce. Samotný program byl změněn tak, aby sejmuté obrázky nevykresloval, ale logoval je, tím se samotný běh zrychlil. Pro zpětné offline vyhodnocení úspěšnosti ,,sestřelu`` byla implemtována funkce \textit{playResults}.
+Oproti první etapě nastaly především změny v regulátoru, primitivní P regulátor byl rozšířen o integrační složku a obě konstanty byly důkladněji naladěny řadou provedených testů. Dále v souladu se zadáním druhé etapy byla vylepšena funkce \textit{findMosquitoInImage} o správnou detekci okrajů obrazovky a kód byl optimalizován. Samotný program byl změněn tak, aby sejmuté obrázky nevykresloval, ale logoval je, tím se samotný běh zrychlil. Pro zpětné offline vyhodnocení úspěšnosti ,,sestřelu`` byla implemtována funkce \textit{playResults}.
 
 \section{Řešení problému}
 
