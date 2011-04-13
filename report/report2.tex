@@ -46,22 +46,22 @@ Po spuštění funce se zinicializuje servo mechanismus tak, aby se kamera nasta
 Dále se zincializuje kamera a s periodou $X? s$ se s využitím callback funkce volá \textit{processNextFrame}, která zahrnuje hlavní chod programu. Perioda je nastavena jako základní testovací, její hodnota se bude ladit do třetí etapy tak, aby byla optimální a omezená pouze parametry kamery a mechanické soustavy. 
 
 \textit{processNextFrame}
-Tato funkce vyčte jeden obraz z kamery, upraví ho využitím deBayerizace, Takto upravený obraz předá funkci findMosquitoInImage, která vrátí souřadnice pixelů ve dvou směrech x, y, kde se nachází střed komára. Tyto souřadnice se předají funkci mosquitoPxPositionToAzimuthAndElevation, která vrátí hodnoty azimutu a elevace pro natočení serv. Tyto hodnoty se používají jako referenční a byl implementován jednoduchý P regulátor pro řížení pohybu komára.
+Tato funkce vyčte jeden obraz z~kamery, upraví ho využitím deBayerizace, Takto upravený obraz předá funkci findMosquitoInImage, která vrátí souřadnice pixelů ve dvou směrech x, y, kde se nachází střed komára. Tyto souřadnice se předají funkci mosquitoPxPositionToAzimuthAndElevation, která vrátí hodnoty azimutu a elevace pro natočení serv. Tyto hodnoty se používají jako referenční a byl implementován jednoduchý P regulátor pro řížení pohybu komára.
 
-?Nezkusíme implementovat PI? Co s windup jevem?
+?Nezkusíme implementovat PI? Co s~windup jevem?
 ?Oříznutí hodnot na maximální okraj monitoru
 
 findMosquitoInImage
 
-Z barevného obrázku se nejprve vytvoří obrázek šedotónový uložený ve formátu uint8. Po té se naleznou oblasti, ve kterých je podezření na komára na základě znalosti, že komár je tmavý obrazec na světlém pozadí. Tyto oblasti se vyhodnocují na základě histogramu obrázku, hodnoty světlejší než intenzita 200 se zahodí. Tato hodnota byla experimentálně určena, s dostatečnou jistotou oblast komára není světlejší, maximální světlost byla pozorována pod hodnotou 100. Ve zbylé části histogramu se vyhodnotí maximum četností. Práh pro detekci komára je stanoven jako dvojnásobek této hodnoty – dostatečné pokrytí rozložení intenzit kolem maxima. 
+Z~barevného obrázku se nejprve vytvoří obrázek šedotónový uložený ve formátu uint8. Po té se naleznou oblasti, ve kterých je podezření na komára na základě znalosti, že komár je tmavý obrazec na světlém pozadí. Tyto oblasti se vyhodnocují na základě histogramu obrázku, hodnoty světlejší než intenzita 200 se zahodí. Tato hodnota byla experimentálně určena, s dostatečnou~jistotou oblast komára není světlejší, maximální světlost byla pozorována pod hodnotou 100. Ve zbylé části histogramu se vyhodnotí maximum četností. Práh pro detekci komára je stanoven jako dvojnásobek této hodnoty – dostatečné pokrytí rozložení intenzit kolem maxima. 
 
-Pro oblasti tmavší než daný práh se s využitím funkce regionprops vyhodnotí jejich středy, obsahy a maximální délka osy. Oblasti, jejichž obsah či délka osy přesahuje maximální přípustnou hodnotu pro komára, jsou zahozeny. Tím tedy zůstane oblast odpovídající komárovi, její střed je návratová hodnota této funkce. Výpočetní rychlost algoritmu byla optimalizována, při měření času funkcemi tic, toc byl v průměru naměřen čas 0,08 s.
+Pro oblasti tmavší než daný práh se s~využitím funkce regionprops vyhodnotí jejich středy, obsahy a maximální délka osy. Oblasti, jejichž obsah či délka osy přesahuje maximální přípustnou hodnotu pro komára, jsou zahozeny. Tím tedy zůstane oblast odpovídající komárovi, její střed je návratová hodnota této funkce. Výpočetní rychlost algoritmu byla optimalizována, při měření času funkcemi tic, toc byl v~průměru naměřen čas 0,08 s.
 
 ?zkontrolovat hodnotu
 
 mosquitoPxPositionToAzimuthAndElevation
 
-V této funkci se přepočtou souřadnice v pixelech obrazu na informaci u azimutu a elevaci.
+V~této funkci se přepočtou souřadnice v~pixelech obrazu na informaci u azimutu a elevaci.
 
 ?konkrétnější popis
 
