@@ -37,17 +37,6 @@
 		soustavou serv a počítat transformace souřadnic mezi obrazovkou a souřadným
 		systémem serv.
 
-		Regulace, tedy výpočet nové polohy kamery $x_{new}, y_{new}$ je řešena jako PI
-		regulátor. Vypočte se rozdíl mezi skutečnou a žádanou hodnotou $err$ a do
-		proměné $sum_e$ se tato odchylka přičítá, při čemž její počáteční hodnota je
-		nulová. Proměné $x, y$ jsou souřadnice aktuální polohy kamery.
-
-		$$x_{new} = x + P\cdot err + I\cdot sum_e$$
-		$$y_{new} = y + P\cdot err + I\cdot sum_e$$
-
-		Do třetí etapy regulátor bude vylepšen o naladění $P, I$ složek pro každou osu
-		zvlášť a doplnění o antiwind-up. 
-
 \section{Změny specifikace}
 
 
@@ -57,8 +46,8 @@
 		pro určení polohy komára v obraze z kamery tak, aby si správně poradila s případnou
 		přítomností okrajů obrazovky ve snímku a kód této funkce byl optimalizován.
 		Program byl změněn tak, aby sejmuté obrázky nevykresloval,
-		ale pouze je zaznamenával a tím se jeho běh zrychlil. Pro zpětné (\uv{offline}) vizuální 
-		vyhodnocení úspěšnosti \uv{sestřelu} byla implemtována funkce \textit{playResults},
+		ale pouze je zaznamenával a tím se jeho běh zrychlil. Pro zpětné („offline“) vizuální 
+		vyhodnocení úspěšnosti „sestřelu“ byla implemtována funkce \textit{playResults},
 		která zobrazí sekvenci zaznamenaných snímků.
 
 
@@ -115,9 +104,22 @@
 		bayerizace. Takto upravený obraz předá funkci \textit{findMosquitoInImage},
 		jejíž návratové hodnoty jsou $x, y$ souřadnice středu komára v obraze. Tyto
 		hodnoty jsou předány funkci \textit{mosquitoPxPositionToAzimuthAndElevation},
-		která vypočte hodnoty azimutu a elevace. V těle funkce \textit{processNextFrame}
-		je implementován PI regulátor. Pozice kamery je saturována na hodnoty, ve
-		kterých je očekáván komár, tedy na hodnoty odpovídající kraji monitoru. 
+		která vypočte hodnoty azimutu a elevace. 
+
+	        Regulace, tedy výpočet nové polohy kamery $x_{new}, y_{new}$ je řešena jako PI
+		regulátor v těle funkce \textit{processNextFrame}. 
+	        Vypočte se rozdíl mezi skutečnou a žádanou hodnotou $err$ a do
+		proměné $sum_e$ se tato odchylka přičítá, při čemž její počáteční hodnota je
+		nulová. Proměné $x, y$ jsou souřadnice aktuální polohy kamery.
+
+		$$x_{new} = x + P\cdot err + I\cdot sum_e$$
+		$$y_{new} = y + P\cdot err + I\cdot sum_e$$
+
+		Pozice kamery je saturována na hodnoty, ve
+		kterých je očekáván komár, tedy na hodnoty odpovídající kraji monitoru.
+
+		Do třetí etapy regulátor bude vylepšen o naladění $P, I$ složek pro každou osu
+		zvlášť a doplnění o antiwind-up. 
 
 		\vspace{0.5cm}
 		\textit{findMosquitoInImage}
@@ -178,7 +180,7 @@
 		Cílem etapy bylo zoptimalizovat detekci komára v obraze. 
 		S využitím Matlabovských funkcí \textit{tic} a \textit{toc} byl měřen čas vykonávání funkce, 
 		tento experiment byl třicetkrát zopakován a naměřený čas byl zprůměrován, funkce v průměru trvala $0,08 s$. 
-		Tento čas považujeme za velmi uspokující, samotná maximální perioda s jakou je možné získat obrázky z kamery je $15 s$. 
+		Samotná maximální perioda s jakou je možné získat obrázky z kamery je $0, 067s$, proto by bylo potřeba běh funkce ještě zrychlit, bohužel z dostupných algoritmů žádný neodpovídal lépe daným požadavkům. 
 
 		V první etapě byl pro regulaci implementován pouze jednoduchý P regulátor, což mělo za následek, 
 		že kamera byla vždy pozadu za skutečnou pozicí komára. Přidáním integrační složky se dosáhlo zlepšení tohoto stavu. 
@@ -189,9 +191,10 @@
 
 \section{Diskuze a Závěr}
 		Cíl druhé etapy byl naplněn, detekce komára v obraze byla optimalizována a otestována, viz sekce Experimenty. 
-		Dále byl vylepšen regulátor přidáním integrační složka. Do třetí etapy bude regulátor upraven tak, 
-		aby komára dokázal bezpečně sledovat i při vyšších rychlostech, za tímto účelem bude smyčka doplněna o 
-		predikci pohybu komára. Celý program bude zoptimalizován a na řadě experimentů bude otestována funkčnost. 
+		Dále byl vylepšen regulátor přidáním integrační složky. Do třetí etapy bude regulátor upraven tak, 
+		aby komára dokázal bezpečně sledovat i při vyšších rychlostech.
+		Za tímto účelem bude smyčka doplněna o predikci pohybu komára. Celý program bude upraven tak, aby efektivně využíval přiděléné prostředky.
+		Na řadě experimentů bude otestována funkčnost. 
 
 \bibliographystyle{splncs03}
 \bibliography{report}
