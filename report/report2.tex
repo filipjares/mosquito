@@ -18,86 +18,163 @@
 
 \section{Popis úlohy}
 
-Řešená úloha je inspirována článkem Backyard star wars \cite{zadani}. Pohyblivá kamera sleduje simulovaného komára, který je představován černým čtvercem na bílém pozadí monitoru. Pohyb kamery je možné řídit natočením okolo svislé osy (změnou azimutu) a natočením okolo vodorovné osy (změnou elevace). Cílem úlohy je řídit kameru tak, aby sledovala pohyb komára a zdokumentovala jeho „sestřel“ sérií snímků, ve kterých je komár ve středu obrazu z kamery – uprostřed „záměrného kříže“.
+		Řešená úloha je inspirována článkem Backyard star wars \cite{zadani}. Pohyblivá
+		kamera sleduje simulovaného komára, který je představován černým čtvercem na
+		bílém pozadí monitoru. Pohyb kamery je možné řídit natočením okolo svislé osy
+		(změnou azimutu) a natočením okolo vodorovné osy (změnou elevace). Cílem úlohy
+		je řídit kameru tak, aby sledovala pohyb komára a zdokumentovala jeho „sestřel“
+		sérií snímků, ve kterých je komár ve středu obrazu z kamery – uprostřed
+		„záměrného kříže“.
 
 \section{Rozbor problému}
 
-Úloha se skládá z několika oblastí, především je zde zastoupena oblast počítačového vidění, kdy je nutné sejmout obrázek z kamery, zpracovat ho a detekovat v obraze komára. Další oblastí, která je zastoupena, je řízení, celý program tvoří zpětnovazební smyčku, pro regulaci je použit PI regulátor. Pro lepší funkci je nutné najít a implemtovat vhodný způsob predikce pohybu komára. V neposlední řadě je v problému zastoupena robotika, kdy je potřeba pracovat se soustavou serv a počítat transformace souřadnic mezi obrazovkou a souřadným systémem serv.
+		Úloha se skládá z několika oblastí, především je zde zastoupena oblast
+		počítačového vidění, kdy je nutné sejmout obrázek z kamery, zpracovat ho a
+		detekovat v obraze komára. Další oblastí, která je zastoupena, je řízení, celý
+		program tvoří zpětnovazební smyčku, pro regulaci je použit PI regulátor. Pro
+		lepší funkci je nutné najít a implemtovat vhodný způsob predikce pohybu komára.
+		V neposlední řadě je v problému zastoupena robotika, kdy je potřeba pracovat se
+		soustavou serv a počítat transformace souřadnic mezi obrazovkou a souřadným
+		systémem serv.
 
-Regulace, tedy výpočet nové polohy kamery $x_{new}, y_{new}$ je řešena jako PI regulátor. Vypočte se rozdíl mezi skutečnou a žádanou hodnotou $err$ a do proměné $sum_e$ se tato odchylka přičítá, při čemž její počáteční hodnota je nulová. Proměné $x, y$ jsou souřadnice aktuální polohy kamery.
+		Regulace, tedy výpočet nové polohy kamery $x_{new}, y_{new}$ je řešena jako PI
+		regulátor. Vypočte se rozdíl mezi skutečnou a žádanou hodnotou $err$ a do
+		proměné $sum_e$ se tato odchylka přičítá, při čemž její počáteční hodnota je
+		nulová. Proměné $x, y$ jsou souřadnice aktuální polohy kamery.
 
-$$x_{new} = x + P\cdot err + I\cdot sum_e$$
-$$y_{new} = y + P\cdot err + I\cdot sum_e$$
+		$$x_{new} = x + P\cdot err + I\cdot sum_e$$
+		$$y_{new} = y + P\cdot err + I\cdot sum_e$$
 
-Do třetí etapy regulátor bude vylepšen o naladění $P, I$ složek pro každou osu zvlášť a doplnění o antiwind-up. 
+		Do třetí etapy regulátor bude vylepšen o naladění $P, I$ složek pro každou osu
+		zvlášť a doplnění o antiwind-up. 
 
 \section{Změny specifikace}
 
+<<<<<<< HEAD
 Oproti první etapě nastaly především změny v regulátoru, primitivní P regulátor byl rozšířen o integrační složku a obě konstanty byly důkladněji naladěny řadou provedených testů. Dále v souladu se zadáním druhé etapy byla vylepšena funkce \textit{findMosquitoInImage} o správnou detekci okrajů obrazovky a její kód byl optimalizován. Samotný program byl změněn tak, aby sejmuté obrázky nevykresloval, ale logoval je, tím se samotný běh zrychlil. Pro zpětné offline vyhodnocení úspěšnosti ,,sestřelu`` byla implemtována funkce \textit{playResults}.
+=======
+		Oproti první etapě nastaly především změny v regulátoru, primitivní P regulátor
+		byl rozšířen o integrační složku a obě konstanty byly důkladněji naladěny řadou
+		provedených testů. Dále v souladu se zadáním druhé etapy byla vylepšena funkce
+		\textit{findMosquitoInImage} o správnou detekci okrajů obrazovky a kód byl
+		optimalizován. Samotný program byl změněn tak, aby sejmuté obrázky
+		nevykresloval, ale logoval je, tím se samotný běh zrychlil. Pro zpětné offline
+		vyhodnocení úspěšnosti ,,sestřelu`` byla implemtována funkce
+		\textit{playResults}.
+>>>>>>> 9cc7b88f5a8a355d2d7f526e69ba0df3ff462e47
 
 \section{Řešení problému}
 
-Rámec programu je tvořen zpětnovazební regulační smyčkou pro řízení polohy kamery. Vstupem regulátoru je nejnovější získaný obrázek z kamery a jeho výstupem je nová poloha kamery. Schématicky je to znázorněno na obrázku \ref{fig:rid_system}.
-Před samotným výpočtem nové polohy kamery je vyhodnocen nově získaný obraz. Postup jeho zpracování je znázorněn na obrázku \ref{fig:kamera}.
-Nejprve je určena poloha komára v obraze (funkce \textit{findMosquitoInImage}) v pixelových souřadnicích. Na základě odchylky této polohy od středu obrázku potom funkce \textit{mosquitoPxPositionToAzimuthAndElevation} počítá odhad úhlů, o které je komár vychýlen od optické osy kamery. Pro urychlení celé smyčky jsou data pouze logována, nikoliv zobrazována. Uživatel si snadno tato data přehraje offline.
+		Rámec programu je tvořen zpětnovazební regulační smyčkou pro řízení polohy
+		kamery. Vstupem regulátoru je nejnovější získaný obrázek z kamery a jeho
+		výstupem je nová poloha kamery. Schématicky je to znázorněno na obrázku
+		\ref{fig:ridiciSystem}.  Před samotným výpočtem nové polohy kamery je vyhodnocen
+		nově získaný obraz. Postup jeho zpracování je znázorněn na obrázku
+		\ref{fig:zpracovaniObrazu}.  Nejprve je určena poloha komára v obraze (funkce
+		\textit{findMosquitoInImage}) v pixelových souřadnicích. Na základě odchylky
+		této polohy od středu obrázku potom funkce
+		\textit{mosquitoPxPositionToAzimuthAndElevation} počítá odhad úhlů, o které je
+		komár vychýlen od optické osy kamery. Pro urychlení celé smyčky jsou data pouze
+		logována, nikoliv zobrazována. Uživatel si snadno tato data přehraje offline.
 
-\begin{figure}[!h]
-    \centering
-     \includegraphics[width=1\columnwidth]{pics/schema_ridiciho_systemu}
-     \caption{Schéma řídícího systému\label{fig:rid_system}}
-\end{figure}
+		\begin{figure}[!h]
+			\centering
+			 \includegraphics[width=1\columnwidth]{pics/schema_ridiciho_systemu}
+			 \caption{Schéma řídícího systému}\label{fig:ridiciSystem}
+		\end{figure}
 
 
 \section{Implementace}
 
 \subsection{Hlavní metody}
 
-Program se spouští hlavní metodou \textit{startMosquitoHunter}:
+		Program se spouští hlavní metodou \textit{startMosquitoHunter}:
 
-Po spuštění funce se zinicializuje servo mechanismus tak, aby se kamera nastavila na střed obrazovky, jedná se o startovní konfiguraci, ve která kamera čeká dokud komár nepřilétne do jejího zorného pole. Tento postup je sice pasivní, ale experimenty prokázaly, že oproti aktivímu vyhledávání komára na počátku programu je časově efektivnější. Aktivním vyhledáváním je myšlen algoritmus, kdy kamera sekvenčně snímala pruhy obrazovky a vyhledávala komára.
+		Po spuštění funce se zinicializuje servo mechanismus tak, aby se kamera
+		nastavila na střed obrazovky, jedná se o startovní konfiguraci, ve která kamera
+		čeká dokud komár nepřilétne do jejího zorného pole. Tento postup je sice
+		pasivní, ale experimenty prokázaly, že oproti aktivímu vyhledávání komára na
+		počátku programu je časově efektivnější. Aktivním vyhledáváním je myšlen
+		algoritmus, kdy kamera sekvenčně snímala pruhy obrazovky a vyhledávala komára.
 
-Jako další krok se zincializuje kamera a s periodou $X? s$ se s využitím callback funkce volá \textit{processNextFrame}, která zahrnuje hlavní chod programu. Perioda je nastavena jako základní testovací, její hodnota se bude ladit do třetí etapy tak, aby byla optimální a omezená pouze parametry kamery a mechanické soustavy. 
+		Jako další krok se zincializuje kamera a s periodou $X? s$ se s využitím
+		callback funkce volá \textit{processNextFrame}, která zahrnuje hlavní chod
+		programu. Perioda je nastavena jako základní testovací, její hodnota se bude
+		ladit do třetí etapy tak, aby byla optimální a omezená pouze parametry kamery a
+		mechanické soustavy. 
 
-\begin{figure}[!h]
-    \centering
-     \includegraphics[width=1\columnwidth]{pics/zpracovani_obrazu_z_kamery}
-     \caption{Zpracování obrazu z kamery\label{fig:rid_system}}
-\end{figure}
+		\begin{figure}[!h]
+			\centering
+			 \includegraphics[width=1\columnwidth]{pics/zpracovani_obrazu_z_kamery}
+			 \caption{Zpracování obrazu z kamery\label{fig:zpracovaniObrazu}}
+		\end{figure}
 
 
 \vspace{0.5cm}
 \textit{processNextFrame}
 
-Tato funkce pracuje s jedním obrazem získaným z kamery, upraví ho využitím de bayerizace. Takto upravený obraz předá funkci \textit{findMosquitoInImage}, jejíž návratové hodnoty jsou $x, y$ souřadnice středu komára v obraze. Tyto hodnoty jsou předány funkci \textit{mosquitoPxPositionToAzimuthAndElevation}, která vypočte hodnoty azimutu a elevace. V těle funkce \textit{processNextFrame} je implementován PI regulátor. Pozice kamery je saturována na hodnoty, ve kterých je očekáván komár, tedy na hodnoty odpovídající kraji monitoru. 
+		Tato funkce pracuje s jedním obrazem získaným z kamery, upraví ho využitím de
+		bayerizace. Takto upravený obraz předá funkci \textit{findMosquitoInImage},
+		jejíž návratové hodnoty jsou $x, y$ souřadnice středu komára v obraze. Tyto
+		hodnoty jsou předány funkci \textit{mosquitoPxPositionToAzimuthAndElevation},
+		která vypočte hodnoty azimutu a elevace. V těle funkce \textit{processNextFrame}
+		je implementován PI regulátor. Pozice kamery je saturována na hodnoty, ve
+		kterých je očekáván komár, tedy na hodnoty odpovídající kraji monitoru. 
 
-\vspace{0.5cm}
-\textit{findMosquitoInImage}
+		\vspace{0.5cm}
+		\textit{findMosquitoInImage}
 
-K získání polohy komára v obrazu z kamery byl použit jednoduchý algoritmus využívající morfologických funkci Matlabovského Image Processing Toolboxu. Jedná se o funkce \textit{bwlabel} pro nalezení souvislých oblastí a funkce \textit{regionprops} pro určení délky (vlastnost \textit{MajorAxisLength}) a plochy (vlastnost \textit{Area}) těchto oblastí.
+		K získání polohy komára v obrazu z kamery byl použit jednoduchý algoritmus
+		využívající morfologických funkci Matlabovského Image Processing Toolboxu. Jedná
+		se o funkce \textit{bwlabel} pro nalezení souvislých oblastí a funkce
+		\textit{regionprops} pro určení délky (vlastnost \textit{MajorAxisLength}) a
+		plochy (vlastnost \textit{Area}) těchto oblastí.
 
-%kdyz je to efektivnejsi, proc to nedelame? '' empiricky urcena hodnota? histogram se nelibil? '' jejíchž?
-Komár zobrazovaný na monitoru pracoviště je představován černým čtvercem na bílém pozadí. Barevná informace je proto zanedbávána a použit je pouze obrázek ve stupních šedi (efektivnější by bylo použít pouze jednu z barevných složek). Tento obrázek je následně porovnán s empiricky určeným prahem, oblasti s jasem menším vykazují barevnou podobnost s hledaným komárem. V tomto binárním obrázku jsou nalezeny souvislé oblasti právě využitím funkce \textit{bwlabel}. Z nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto rozhodnutí jsou použity vlastnosti oblastí \textit{MajorAxisLenght} a \textit{Area}. Jsou vyloučeny takové oblasti, jejichž plocha je větší než $3000$ pixelů nebo jejichž délka je více než $50$ pixelů. Tyto hodnoty byly nastaveny na základě maximálních parametrů komára a dostatečné rezervy. Ze zbývajících oblastí je vybrána ta, která má největší plochu. Pro tuto oblast je určena poloha středu v pixelových souřadnicích a tato infromace je návratová hodnota funkce \textit{findMosquitoInImage}.
+		%kdyz je to efektivnejsi, proc to nedelame? '' empiricky urcena hodnota? histogram se nelibil? '' jejíchž?
 
-%Z barevného obrázku se nejprve vytvoří obrázek šedotónový uložený ve formátu uint8. Po té se naleznou oblasti, ve kterých je podezření na komára na základě znalosti, že komár je tmavý obrazec na světlém pozadí. Tyto oblasti se vyhodnocují na základě histogramu obrázku, hodnoty světlejší než intenzita 200 se zahodí. Tato hodnota byla experimentálně určena, s dostatečnou jistotou oblast komára není světlejší, maximální světlost byla pozorována pod hodnotou 100. Ve zbylé části histogramu se vyhodnotí maximum četností. Práh pro detekci komára je stanoven jako dvojnásobek této hodnoty – dostatečné pokrytí rozložení intenzit kolem maxima. 
+		Komár zobrazovaný na monitoru pracoviště je představován černým čtvercem na
+		bílém pozadí. Barevná informace je proto zanedbávána a použit je pouze obrázek
+		ve stupních šedi (efektivnější by bylo použít pouze jednu z barevných složek).
+		Tento obrázek je následně porovnán s empiricky určeným prahem, oblasti s jasem
+		menším vykazují barevnou podobnost s hledaným komárem. V tomto binárním obrázku
+		jsou nalezeny souvislé oblasti právě využitím funkce \textit{bwlabel}. Z
+		nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto
+		rozhodnutí jsou použity vlastnosti oblastí \textit{MajorAxisLenght} a
+		\textit{Area}. Jsou vyloučeny takové oblasti, jejichž plocha je větší než $3000$
+		pixelů nebo jejichž délka je více než $50$ pixelů. Tyto hodnoty byly nastaveny
+		na základě maximálních parametrů komára a dostatečné rezervy. Ze zbývajících
+		oblastí je vybrána ta, která má největší plochu. Pro tuto oblast je určena
+		poloha středu v pixelových souřadnicích a tato infromace je návratová hodnota
+		funkce \textit{findMosquitoInImage}.
+
+		% Z barevného obrázku se nejprve vytvoří obrázek šedotónový uložený ve formátu
+		% uint8. Po té se naleznou oblasti, ve kterých je podezření na komára na základě
+		% znalosti, že komár je tmavý obrazec na světlém pozadí. Tyto oblasti se
+		% vyhodnocují na základě histogramu obrázku, hodnoty světlejší než intenzita 200
+		% se zahodí. Tato hodnota byla experimentálně určena, s dostatečnou jistotou
+		% oblast komára není světlejší, maximální světlost byla pozorována pod hodnotou
+		% 100. Ve zbylé části histogramu se vyhodnotí maximum četností. Práh pro detekci
+		% komára je stanoven jako dvojnásobek této hodnoty – dostatečné pokrytí rozložení
+		% intenzit kolem maxima. 
 
 \vspace{0.5cm}
 \textit{mosquitoPxPositionToAzimuthAndElevation}
 
-V této funkci se přepočtou souřadnice v pixelech obrazu na informaci o azimutu a elevaci.
+		V této funkci se přepočtou souřadnice v pixelech obrazu na informaci o azimutu a
+		elevaci.
 
-%konkrétnější popis
+		% konkrétnější popis
 
 \subsection{Pomocné metody}
 
-\begin{itemize}
- \item \textit{addCrosshairToThePicture} Do středu obrázku vykreslí kříž zadané tloušťky. 
- \item \textit{deBayerize} Provede deBayerizaci obrázku.
-\item \textit{initLoggingVariables} Zinicializují se proměné potřebné pro logování.
- \item \textit{logData} Ukládá obraz, pozici komára, posun kamer, potřebný čas k běhu a další proměné pro zpětné testování funkcí.
-\item \textit{playResults} Přehraje zalogované obrázky s vykresleným záměrným křížem.
-\item \textit{stopMosquitoHunter} Ukončí práci s kamerou a servo mechanismem.
-
-\end{itemize}
+		\begin{itemize}
+				\item \textit{addCrosshairToThePicture} Do středu obrázku vykreslí kříž zadané tloušťky. 
+				\item \textit{deBayerize} Provede deBayerizaci obrázku.
+				\item \textit{initLoggingVariables} Zinicializují se proměné potřebné pro logování.
+				\item \textit{logData} Ukládá obraz, pozici komára, posun kamer, potřebný čas k běhu a další proměné pro zpětné testování funkcí.
+				\item \textit{playResults} Přehraje zalogované obrázky s vykresleným záměrným křížem.
+				\item \textit{stopMosquitoHunter} Ukončí práci s kamerou a servo mechanismem.
+		\end{itemize}
 
 \section{Experimentální výsledky}
 
