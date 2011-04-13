@@ -180,17 +180,18 @@
 		Cílem etapy bylo zoptimalizovat detekci komára v obraze. 
 		S využitím Matlabovských funkcí \textit{tic} a \textit{toc} byl měřen čas vykonávání funkce, 
 		tento experiment byl třicetkrát zopakován a naměřený čas byl zprůměrován, funkce v průměru trvala $0,08 s$. 
-		Samotná maximální perioda s jakou je možné získat obrázky z kamery je $0, 067s$, proto by bylo potřeba běh funkce ještě zrychlit, bohužel z dostupných algoritmů žádný neodpovídal lépe daným požadavkům. 
+		Minimální perioda s jakou je možné získat obrázky z kamery je $0,067 s$, proto by bylo potřeba běh funkce ještě více zrychlit, bohužel z vyzkoušených algoritmů žádný neodpovídal lépe daným požadavkům. 
 
 		V první etapě byl pro regulaci implementován pouze jednoduchý P regulátor, což mělo za následek, 
 		že kamera byla vždy pozadu za skutečnou pozicí komára. Přidáním integrační složky se dosáhlo zlepšení tohoto stavu. 
 		Jako další experiment bylo provedeno měření vzdálenosti středu komára od středu obrázku. 
-		Toto měření bylo zopakováno 300 krát a průměrná vzdálenost za tato měření je v ose $x$ $6$ pixelů a v ose $y$ $13$ pixelů.
+		Toto měření bylo zopakováno 300 krát a průměrná vzdálenost je $14,3 $ pixelů.
 
 
 
 \section{Diskuze a Závěr}
-		Cíl druhé etapy byl naplněn, detekce komára v obraze byla optimalizována a otestována, viz sekce Experimenty. 
+		Cíl druhé etapy byl naplněn, čas detekce komára v obraze považujeme za uspokojující, ale pro maximální rychlost smyčky je potřeba výpočet zrychlit. Do třetí etapy bychom rádi prostudovali další literaturu a upravili algoritmus tak, aby běh smyčky byl ještě rcyhlejší. 
+
 		Dále byl vylepšen regulátor přidáním integrační složky. Do třetí etapy bude regulátor upraven tak, 
 		aby komára dokázal bezpečně sledovat i při vyšších rychlostech.
 		Za tímto účelem bude smyčka doplněna o predikci pohybu komára. Celý program bude upraven tak, aby efektivně využíval přiděléné prostředky.
