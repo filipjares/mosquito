@@ -22,6 +22,8 @@
 
 \section{Rozbor problému}
 
+Úloha se skládá z několika oblastí, především je zde zastoupena oblast počítačového vidění, kdy je nutné sejmout obrázek z kamery, zpracovat ho a detekovat v obraze komára. Další oblastí, která je zastoupena, je řízení, celý program tvoří zpětnovazební smyčku, pro regulaci je použit PI regulátor. Pro lepší funkci je nutné najít a implemtovat vhodný způsob predikce pohybu komára. V neposlední řadě je v problému zastoupena robotika, kdy je potřeba pracovat se soustavou serv a počítat transformace souřadnic mezi obrazovkou a souřadným systémem serv.
+
 \section{Změny specifikace}
 
 Oproti první etapě nastaly především změny v regulátoru, primitivní P regulátor byl rozšířen o integrační složku a obě konstanty byly důkladněji naladěny řadou provedených testů. Dále v souladu se zadáním druhé etapy byla vylepšena funkce \textit{findMosquitoInImage}, především o správnou detekci okrajů obrazovky a rychlý běh funkce. Samotný program byl změněn tak, aby sejmuté obrázky nevykresloval, ale logoval je, tím se samotný běh zrychlil. Pro zpětné offline vyhodnocení úspěšnosti ,,sestřelu`` byla implemtována funkce \textit{playResults}.
