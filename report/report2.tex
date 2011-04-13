@@ -95,11 +95,10 @@
 		počátku programu je časově efektivnější. Aktivním vyhledáváním je myšlen
 		algoritmus, kdy kamera sekvenčně snímala pruhy obrazovky a vyhledávala komára.
 
-		Jako další krok se zincializuje kamera a s periodou $X? s$ se s využitím
-		callback funkce volá \textit{processNextFrame}, která zahrnuje hlavní chod
-		programu. Perioda je nastavena jako základní testovací, její hodnota se bude
-		ladit do třetí etapy tak, aby byla optimální a omezená pouze parametry kamery a
-		mechanické soustavy. 
+		Jako další krok se zincializuje kamera a s využitím
+		callback funkce se volá \textit{processNextFrame}, která zahrnuje hlavní chod
+		programu. Perioda spouštění je nastavena na dvojnásobek snímací frekvence, k regulaci se používá každý druhý obrázek.
+		Tato perioda je nastavena jako základní testovací, do třetí etapy bude program časově optimalizován.
 
 		\begin{figure}[!h]
 			\centering
@@ -178,13 +177,20 @@
 		Cílem etapy bylo zoptimalizovat detekci komára v obraze. 
 		S využitím Matlabovských funkcí \textit{tic} a \textit{toc} byl měřen čas vykonávání funkce, 
 		tento experiment byl třicetkrát zopakován a naměřený čas byl zprůměrován, funkce v průměru trvala $0,08 s$. 
-		Tento čas považujeme za velmi uspokující, samotná maximální perioda s jakou je možné získat obrázky z kamery je $X? s$. 
+		Tento čas považujeme za velmi uspokující, samotná maximální perioda s jakou je možné získat obrázky z kamery je $15 s$. 
+
+		V první etapě byl pro regulaci implementován pouze jednoduchý P regulátor, což mělo za následek, 
+		že kamera byla vždy pozadu za skutečnou pozicí komára. Přidáním integrační složky se dosáhlo zlepšení tohoto stavu. 
+		Jako další experiment bylo provedeno měření vzdálenosti středu komára od středu obrázku. 
+		Toto měření bylo zopakováno 300 krát a průměrná vzdálenost za tato měření je v ose $x$ $6$ pixelů a v ose $y$ $13$ pixelů.
 
 
 
-
-\section{Diskuze}
-\section{Závěr}
+\section{Diskuze a Závěr}
+		Cíl druhé etapy byl naplněn, detekce komára v obraze byla optimalizována a otestována, viz sekce Experimenty. 
+		Dále byl vylepšen regulátor přidáním integrační složka. Do třetí etapy bude regulátor upraven tak, 
+		aby komára dokázal bezpečně sledovat i při vyšších rychlostech, za tímto účelem bude smyčka doplněna o 
+		predikci pohybu komára. Celý program bude zoptimalizován a na řadě experimentů bude otestována funkčnost. 
 
 \bibliographystyle{splncs03}
 \bibliography{report}
