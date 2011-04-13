@@ -50,18 +50,16 @@
 
 \section{Změny specifikace}
 
-<<<<<<< HEAD
-Oproti první etapě nastaly především změny v regulátoru, primitivní P regulátor byl rozšířen o integrační složku a obě konstanty byly důkladněji naladěny řadou provedených testů. Dále v souladu se zadáním druhé etapy byla vylepšena funkce \textit{findMosquitoInImage} o správnou detekci okrajů obrazovky a její kód byl optimalizován. Samotný program byl změněn tak, aby sejmuté obrázky nevykresloval, ale logoval je, tím se samotný běh zrychlil. Pro zpětné offline vyhodnocení úspěšnosti ,,sestřelu`` byla implemtována funkce \textit{playResults}.
-=======
+
 		Oproti první etapě nastaly především změny v regulátoru, primitivní P regulátor
 		byl rozšířen o integrační složku a obě konstanty byly důkladněji naladěny řadou
 		provedených testů. Dále v souladu se zadáním druhé etapy byla vylepšena funkce
-		\textit{findMosquitoInImage} o správnou detekci okrajů obrazovky a kód byl
-		optimalizován. Samotný program byl změněn tak, aby sejmuté obrázky
-		nevykresloval, ale logoval je, tím se samotný běh zrychlil. Pro zpětné offline
-		vyhodnocení úspěšnosti ,,sestřelu`` byla implemtována funkce
-		\textit{playResults}.
->>>>>>> 9cc7b88f5a8a355d2d7f526e69ba0df3ff462e47
+		\textit{findMosquitoInImage} o správnou detekci okrajů obrazovky a její kód byl
+		optimalizován. Samotný program byl změněn tak, aby sejmuté obrázky nevykresloval, 
+		ale pouze je zaznamenával a tím samotný běh zrychlil. Pro zpětné vizuální offline 
+		vyhodnocení úspěšnosti ,,sestřelu`` byla implemtována funkce \textit{playResults},
+		která zobrazí sekvenci zaznamenaných snímků.
+
 
 \section{Řešení problému}
 
@@ -170,13 +168,17 @@ Oproti první etapě nastaly především změny v regulátoru, primitivní P re
 		\begin{itemize}
 				\item \textit{addCrosshairToThePicture} Do středu obrázku vykreslí kříž zadané tloušťky. 
 				\item \textit{deBayerize} Provede deBayerizaci obrázku.
-				\item \textit{initLoggingVariables} Zinicializují se proměné potřebné pro logování.
+				\item \textit{initLoggingVariables} Zinicializují se proměné potřebné pro ukládání dat.
 				\item \textit{logData} Ukládá obraz, pozici komára, posun kamer, potřebný čas k běhu a další proměné pro zpětné testování funkcí.
-				\item \textit{playResults} Přehraje zalogované obrázky s vykresleným záměrným křížem.
+				\item \textit{playResults} Přehraje uložené obrázky s vykresleným záměrným křížem.
 				\item \textit{stopMosquitoHunter} Ukončí práci s kamerou a servo mechanismem.
 		\end{itemize}
 
 \section{Experimentální výsledky}
+		Cílem etapy bylo zoptimalizovat detekci komára v obraze. 
+		S využitím Matlabovských funkcí \textit{tic} a \textit{toc} byl měřen čas vykonávání funkce, 
+		tento experiment byl třicetkrát zopakován a naměřený čas byl zprůměrován, funkce v průměru trvala $0,08 s$. 
+		Tento čas považujeme za velmi uspokující, samotná maximální perioda s jakou je možné získat obrázky z kamery je $X? s$. 
 
 
 
