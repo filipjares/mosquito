@@ -6,7 +6,12 @@ function processNextFrame(vid, event)
     global ser x y;             % serial port object and actual pan-tilt position
     global k;                   % number of pictures acquired
     global huntStarted;         % was mosquito ever found?
-
+    
+    global previous_errx;        % previous error of regulation
+    global previous_erry; 
+    global integralx;            
+    global integraly; 
+    
     % take picture
     [img time meta] = getdata(vid, 1);
     if (any(size(img) ~= [960 1280]))
@@ -25,10 +30,23 @@ function processNextFrame(vid, event)
     [mAzimuth, mInclination] = mosquitoPxPositionToAzimuthAndElevation(newX, newY);
     
     % TODO: use correct transformations
+    P=20; %pro refresh 150
+    %P=25; %pro refresh 100
+    I=1.6;
+    previous_errx = 0;
+    previous_erry = 0;
+    integralx = 0;
+    integraly = 0;
+    T = 2; %???
     if ~isnan(mAzimuth) & ~isnan(mInclination)
+        integralx = integralx + mAzimuth*T;
+        integraly = integraly + mInclination*T;
+        
         huntStarted = true;
-        x = x + mAzimuth * 30;     % TODO: remove this magic number
-        y = y + mInclination * 30; % TODO: remove this magic number
+        x = x + mAzimuth * P + I*integralx;     % TODO: remove this magic number
+        y = y + mInclination * P+I*integraly; % TODO: remove this magic number
+        previous_errx = mAzimuth;
+        previous_erry = mInclination;
         ptmove(ser, x, y);
         str = sprintf('Mosquito found at [%.2f, %.2f] in picture at [%.2f, %.2f].', x, y, newX, newY);
         disp(str);
