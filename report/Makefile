@@ -14,7 +14,7 @@ report.ps: report.dvi
 report.dvi: report.tex
 	latex -output-format dvi $<; bibtex report; latex -output-format dvi $<; latex -output-format dvi $<
 
-report2.pdf: report2.tex
+report2.pdf: report2.tex report.bib pics/schema_ridiciho_systemu.pdf pics/zpracovani_obrazu_z_kamery.pdf
 	pdfcslatex $<; bibtex report2; pdfcslatex $<; pdfcslatex $<
 
 report2.ps: report2.dvi
@@ -22,4 +22,5 @@ report2.ps: report2.dvi
 
 report2.dvi: report2.tex
 	latex -output-format dvi $<; bibtex report2; latex -output-format dvi $<; latex -output-format dvi $<
+
 
