@@ -2,8 +2,8 @@ function [x, y] = findMosquitoInImage(img)
 
     % based on util_findlaser.m from the Image Acqustion Toolbox Laser tracking demo
 
-    grayscale = uint8((uint16(img(:,:,1)) + uint16(img(:,:,2)) + uint16(img(:,:,3)))/3);
-    candidates = (grayscale < 100);
+    % grayscale = uint8((uint16(img(:,:,1)) + uint16(img(:,:,2)) + uint16(img(:,:,3)))/3);
+    candidates = (img(:,:,2) < 100);
     props = regionprops(bwlabel(candidates), 'Area', 'Centroid', 'MajorAxisLength');
     
     area = [props.Area];
