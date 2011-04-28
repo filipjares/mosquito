@@ -1,9 +1,9 @@
 function playResults(start, stop)
 
-    global gdata;
+    global n;
 
     if (nargin < 2)
-        stop = size(gdata,4);
+        stop = n;
     end
     if (nargin < 1)
         start = 1;
