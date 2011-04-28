@@ -1,9 +1,9 @@
 function playResults(start, stop)
 
-    global n gtime;
+    global N n gtime;
 
     if (nargin < 2)
-        stop = n;
+        stop = min(n,N);
     end
     if (nargin < 1)
         start = 1;
@@ -11,7 +11,7 @@ function playResults(start, stop)
 
     for i=start:stop
         showRecordedImage(i);
-        pause(mean(diff(gtime(1:n))));
+        pause(mean(diff(gtime(1:stop))));
     end
 
 end
