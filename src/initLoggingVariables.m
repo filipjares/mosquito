@@ -2,8 +2,8 @@
 
 global N n gdata gtime gmeta gPos gMosquitoInImage;
 
-N = 40;                             % total number of images to log
-gdata = uint8(zeros(480,640,3,N));  % for pictures logging
+N = 180;                            % total number of images to log
+gdata = uint8(zeros(480,640,1,N));  % for pictures logging
 % TODO: init gmeta properly
 gtime = zeros(N, 1);                % time instants of particular snapshots
 gPos = zeros(N, 2);                 % camera (pan-tilt unit) positions

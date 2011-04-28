@@ -12,7 +12,7 @@ function logData(k, img, time, meta, pos, mosquitoInImage, mosquitoInImageDurati
     if (n <= N)
         disp('saving image to gdata');
         nk(n) = k;
-        gdata(:,:,:,n) = img(:,:,:);
+        gdata(:,:,:,n) = img(:,:,2);
         gtime(n) = time;
         gmeta{n} = meta;
         
