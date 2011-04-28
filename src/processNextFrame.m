@@ -12,6 +12,8 @@ function processNextFrame(vid, event)
     global integralx;            
     global integraly; 
     
+    global P I;
+    
     % take picture
     [img time meta] = getdata(vid, 1);
     if (any(size(img) ~= [960 1280]))
@@ -34,9 +36,6 @@ function processNextFrame(vid, event)
     [mAzimuth, mInclination] = mosquitoPxPositionToAzimuthAndElevation(newX, newY);
     
     % TODO: use correct transformations
-    P=20; %pro refresh 150
-    %P=25; %pro refresh 100
-    I=1.6;
     previous_errx = 0;
     previous_erry = 0;
     integralx = 0;
