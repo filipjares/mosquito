@@ -18,8 +18,12 @@ function processNextFrame(vid, event)
         disp('getdata failed');
         return;
     end
-    img = deBayerize(img);
     k = k+1;
+    if (k < 5)
+        % first pictures often contain old data
+        return;
+    end
+    img = deBayerize(img);
     
     % find mosquito in the taken image
     fMII = tic;                 % measure findMosquitoInImage duration
