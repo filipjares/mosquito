@@ -10,11 +10,17 @@ initLoggingVariables;
 
 % make them global in order to have them saved into the workspace
 % (and save them into the .mat file together with the logged data)
-global P I;
+global Px Py Ix Iy;
 
-    P=20; %pro refresh 150
+    %Px=20; %pro refresh 150
+    %Py=20;
     %P=25; %pro refresh 100
-    I=1.6;
+    Px=25;
+    Py=25;
+    %Ix=1.6;
+    %Iy=1.6;
+    Ix=10;
+    Iy=10;
 
 %% Camera and Pan-tilt unit initialization
 

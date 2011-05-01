@@ -12,7 +12,7 @@ function processNextFrame(vid, event)
     global integralx;            
     global integraly; 
     
-    global P I;
+    global Px Py Ix Iy;
     
     % take picture
     [img time meta] = getdata(vid, 1);
@@ -46,10 +46,25 @@ function processNextFrame(vid, event)
         integraly = integraly + mInclination*T;
         
         huntStarted = true;
-        x = x + mAzimuth * P + I*integralx;     % TODO: remove this magic number
-        y = y + mInclination * P+I*integraly; % TODO: remove this magic number
+        x = x + mAzimuth * Px + Ix*integralx;     % TODO: remove this magic number
+        y = y + mInclination * Py+Iy*integraly; % TODO: remove this magic number
         previous_errx = mAzimuth;
         previous_erry = mInclination;
+        %Omezeni vystupu
+        if(x<96)
+            x=96;
+        end
+        if(x>155)
+            x=155;
+        end
+        if(y<90)
+            y=90;
+        end
+        if(y>150)
+            y=150;
+        end
+                
+                   
         ptmove(ser, x, y);
         str = sprintf('Mosquito found at [%.2f, %.2f] in picture at [%.2f, %.2f].', x, y, newX, newY);
         disp(str);
