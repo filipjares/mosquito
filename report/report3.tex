@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
 \usepackage{graphicx}
+\usepackage{subfig}
 
 \title{Zpráva k~seminární úloze z~předmětu\\ Inteligentní robotika \\ {\small Závěrečná zpráva}}
 \author{Filip Jareš, Lenka Mudrová}
@@ -71,38 +72,14 @@
 			 \caption{Vývojový diagram programu}\label{fig:Diagram_programu}
 		\end{figure}
 
-		Program se spouští hlavní funkcí \textit{startMosquitoHunter}, 
-		nejprve se zincializuje kamera a servo mechanismy. 
-		Následně se kamera nastaví na střed obrazovky, kde se vyčkává příletu komára do zorného pole kamery. 		
-		Hlavní funkce \textit{processNextFrame} tvoří rámec programu,
-		který je tvořen zpětnovazební regulační smyčkou pro řízení polohy
-		kamery. Vstupem regulátoru je nejnovější získaný obrázek z~kamery a jeho
-		výstupem je nová poloha kamery. Schématicky je to znázorněno na
-		obrázku~\ref{fig:ridiciSystem}.  Před samotným výpočtem nové polohy kamery
-		je vyhodnocen nově zís\-ka\-ný obraz. Postup jeho zpracování je znázorněn na
-		obrázku~\ref{fig:zpracovaniObrazu}.  Nejprve je určena poloha komára v~obraze
-		(funkce \textit{findMosquitoInImage}) v~pixelových sou\-řad\-ni\-cích. Na základě odchylky
-		této polohy od středu obrázku potom funkce
-		\textit{mos\-quito\-Px\-PositionToAzimuthAndElevation} počítá odhad úhlů, o~které je
-		komár vy\-chý\-len od optické osy kamery. Pro urychlení celé smyčky jsou data pouze
-		ukládána, nikoliv zobrazována. Uživatel si snadno tato data přehraje offline.
 
-		\begin{figure}[!h]
-			\centering
-			 \includegraphics[width=1\columnwidth]{pics/schema_ridiciho_systemu}
-			 \caption{Schéma řídícího systému}\label{fig:ridiciSystem}
-		\end{figure}
 
-\section{Implementace}
-
-		Hlavní funkce volá s~využitím callback funkce \textit{processNextFrame}, která zahrnuje hlavní chod
+		Program se spouští hlavní funkcí \textit{startMosquitoHunter}. 
+		Nejprve se zincializuje kamera a servo mechanismy. 
+		Následně se kamera nastaví na střed obrazovky, kde se vyčkává příletu komára do zorného pole kamery. 
+		Tato funkce volá s~využitím callback funkce výkonou funkci \textit{processNextFrame}, která zahrnuje hlavní chod
 		programu. Perioda spouštění je nastavena na dvojnásobek snímací frekvence, k~regulaci se používá každý druhý obrázek.
 		%TODO: proc se bere kazdy druhy?
-		\begin{figure}[!h]
-			\centering
-			 \includegraphics[width=1\columnwidth]{pics/zpracovani_obrazu_z_kamery}
-			 \caption{Zpracování obrazu z~kamery\label{fig:zpracovaniObrazu}}
-		\end{figure}
 
 		Funkce \textit{processNextFrame} pracuje s~jedním obrazem získaným z~kamery, vybere z něj pouze zelenou složku.
 		Pro použití jedné složky jsme se rozhodli především proto, že oproti debayerizaci je výpočetně nenáročná a 
@@ -111,7 +88,21 @@
 
 		Takto upravený obraz se předá funkci \textit{findMosquitoInImage} a 
 		následně je porovnán s~empiricky určeným prahem.
-		Tím vznikne binární maska s~oblastmi, které vykazují barevnou podobnost s~hle\-da\-ným komárem. 
+		Tím vznikne binární maska s~oblastmi, které vykazují barevnou podobnost s~hle\-da\-ným komárem, viz obr. \ref{fig:komar_obr3}.
+
+		\begin{figure}[!htb]
+		  \subfloat[\label{fig:komar_obr1}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-1.jpg}}
+		  \hfill
+		  \subfloat[\label{fig:komar_obr2}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-2.jpg}}
+		  \caption{Nasnímaný obrázek a binární maska}
+		\end{figure}
+		
+		\begin{figure}[!htb]
+		    \subfloat[\label{fig:komar_obr3}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-3.jpg}}
+		    \hfill
+		    \subfloat[\label{fig:komar_obr4}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-3.jpg}}
+		    \caption{Souvislé oblasti s parametrem plocha a hlavní osa; komár se středem}
+		\end{figure}
 		
 		K~získání polohy komára v~obrazu z~kamery byl použit jednoduchý algoritmus
 		využívající morfologických funkci Matlabovského Image Processing Toolboxu. 
@@ -140,6 +131,30 @@
 		kterých je očekáván komár, tedy na hodnoty odpovídající kraji monitoru.
 
 		Konstanty $P$ a $I$ jsou naladěny pro každý směr zvlášť, byl implementován antiwind-up jev.
+		
+
+
+
+%Funkce \textit{processNextFrame} tvoří zpětnovazební regulační smyčkou pro řízení polohy
+%		kamery. Vstupem regulátoru je nejnovější získaný obrázek z~kamery a jeho
+%		výstupem je nová poloha kamery.
+
+
+%Před samotným výpočtem nové polohy kamery
+%		je vyhodnocen nově zís\-ka\-ný obraz. Postup jeho zpracování je znázorněn na
+%		obrázku~\ref{fig:zpracovaniObrazu}.  Nejprve je určena poloha komára v~obraze
+%		(funkce \textit{findMosquitoInImage}) v~pixelových sou\-řad\-ni\-cích. Na základě odchylky
+%		této polohy od středu obrázku potom funkce
+%		\textit{mos\-quito\-Px\-PositionToAzimuthAndElevation} počítá odhad úhlů, o~které je
+%		komár vy\-chý\-len od optické osy kamery. Pro urychlení celé smyčky jsou data pouze
+%		ukládána, nikoliv zobrazována. Uživatel si snadno tato data přehraje offline.
+
+
+\section{Implementace}
+
+		
+
+		
 
 \section{Experimentální výsledky}
 
