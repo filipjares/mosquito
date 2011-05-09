@@ -24,7 +24,7 @@
 \section{Popis úlohy}
 
 		Řešená úloha je inspirována článkem Backyard star wars \cite{zadani}. Pohyblivá
-		kamera sleduje simulovaného komára, který je představován černým čtvercem na
+		kame\-ra sleduje simulovaného komára, který je představován černým čtvercem na
 		bílém pozadí monitoru. Pohyb kamery je možné řídit natočením okolo svislé osy
 		(změnou azimutu) a natočením okolo vodorovné osy (změnou elevace). Cílem úlohy
 		je řídit kameru tak, aby sledovala pohyb komára a zdokumentovala jeho „sestřel“
@@ -35,7 +35,7 @@
 
 		Úloha se skládá z~několika oblastí, především je zde zastoupena oblast
 		po\-čí\-ta\-čo\-vé\-ho vidění, kdy je nutné sejmout obrázek z~kamery, zpracovat ho a
-		detekovat v~obraze komára. Další oblastí, která je zastoupena, je řízení, celý
+		detekovat v~obraze komára. Další oblastí, která je zastoupena, je řízení. Celý
 		program tvoří zpětnovazební smyčku, pro regulaci je použit PI regulátor. Pro
 		lepší funkci je nutné najít a implemtovat vhodný způsob predikce pohybu komára.
 		V~neposlední řadě je v~problému zastoupena robotika, kdy je potřeba pracovat se
@@ -68,7 +68,7 @@
 		této polohy od středu obrázku potom funkce
 		\textit{mos\-quito\-Px\-PositionToAzimuthAndElevation} počítá odhad úhlů, o~které je
 		komár vy\-chý\-len od optické osy kamery. Pro urychlení celé smyčky jsou data pouze
-		logována, nikoliv zobrazována. Uživatel si snadno tato data přehraje offline.
+		ukládána, nikoliv zobrazována. Uživatel si snadno tato data přehraje offline.
 
 		\begin{figure}[!h]
 			\centering
@@ -83,15 +83,15 @@
 
 		Program se spouští hlavní metodou \textit{startMosquitoHunter}:
 
-		Po spuštění funce se zinicializuje servo mechanismus tak, aby se kamera
-		nastavila na střed obrazovky, jedná se o~startovní konfiguraci, ve která kamera
-		čeká dokud komár nepřilétne do jejího zorného pole. Tento postup je sice
+		Po spuštění funkce se zinicializuje servo mechanismus tak, aby se kamera
+		nastavila na střed obrazovky, jedná se o~startovní konfiguraci, ve které kamera
+		čeká, dokud komár nepřilétne do jejího zorného pole. Tento postup je sice
 		pasivní, ale experimenty prokázaly, že oproti aktivímu vyhledávání komára na
 		počátku programu je časově efektivnější. Aktivním vyhledáváním je myšlen
 		algoritmus, kdy kamera sekvenčně snímala pruhy obrazovky a vyhledávala komára.
 
 		Jako další krok se zincializuje kamera a s~využitím
-		callback funkce se volá \textit{processNextFrame}, která zahrnuje hlavní chod
+		callback funkce volá funkci \textit{processNextFrame}, která zahrnuje hlavní chod
 		programu. Perioda spouštění je nastavena na dvojnásobek snímací frekvence, k~regulaci se používá každý druhý obrázek.
 		Tato perioda je nastavena jako základní testovací, do třetí etapy bude program časově optimalizován.
 
@@ -107,11 +107,11 @@
 
 		Tato funkce pracuje s~jedním obrazem získaným z~kamery, upraví ho využitím de
 		bayerizace. Takto upravený obraz předá funkci \textit{findMosquitoInImage},
-		jejíž návratové hodnoty jsou $x, y$ souřadnice středu komára v~obraze. Tyto
+		její návratové hodnoty jsou $x, y$ souřadnice středu komára v~obraze. Tyto
 		hodnoty jsou předány funkci \textit{mosquitoPxPositionToAzimuthAndElevation},
 		která vypočte hodnoty azimutu a elevace. 
 
-	        Regulace, tedy výpočet nové polohy kamery $x_{new}, y_{new}$ je řešena jako PI
+	        Regulace, tedy výpočet nové polohy kamery $x_{new}, y_{new}$, je řešena jako PI
 		regulátor v~těle funkce \textit{processNextFrame}. 
 	        Vypočte se rozdíl mezi skutečnou a žádanou hodnotou $err$ a do
 		proměné $sum_e$ se tato odchylka přičítá, při čemž její počáteční hodnota je
@@ -140,14 +140,14 @@
 		Komár zobrazovaný na monitoru pracoviště je představován černým čtver\-cem na
 		bílém pozadí. Barevná informace je proto zanedbávána a použit je pouze obrázek
 		ve stupních šedi (efektivnější by bylo použít pouze jednu z~barevných složek).
-		Tento obrázek je následně porovnán s~empiricky určeným prahem, tím vznikne binární maska s~oblastmi, 
+		Tento obrázek je následně porovnán s~empiricky určeným prahem, tím vznikne binární obraz s~oblastmi, 
 		které vykazují barevnou podobnost s~hle\-da\-ným komárem. 
 		%oblasti s jasem
 		%menším vykazují barevnou podobnost s hledaným komárem.
 	    
-		V~této masce
+		V~tomto binárním obrazu
 		jsou nalezeny souvislé oblasti právě využitím funkce \textit{bwlabel}.
-Z~nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto
+		Z~nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto
 		rozhodnutí jsou použity vlastnosti oblastí \textit{MajorAxisLenght} a
 		\textit{Area}. Jsou vyloučeny takové oblasti, jejichž plocha je větší než $3000$
 		pixelů nebo jejichž délka je více než $50$ pixelů. Tyto hodnoty byly nastaveny
@@ -178,7 +178,7 @@ Z~nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto
 
 		\begin{itemize}
 				\item \textit{addCrosshairToThePicture} Do středu obrázku vykreslí kříž zadané tloušťky. 
-				\item \textit{deBayerize} Provede deBayerizaci obrázku.
+				\item \textit{deBayerize} Provede de bayerizaci obrázku.
 				\item \textit{initLoggingVariables} Zinicializují se proměné potřebné pro ukládání dat.
 				\item \textit{logData} Ukládá obraz, pozici komára, posun kamer, potřebný čas k~běhu a další proměné pro zpětné testování funkcí.
 				\item \textit{playResults} Přehraje uložené obrázky s~vykresleným záměrným křížem.
@@ -187,16 +187,16 @@ Z~nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto
 
 \section{Experimentální výsledky}
 
-		Cílem etapy bylo zoptimalizovat detekci komára v~obraze. 
+		Cílem etapy bylo optimalizovat detekci komára v~obraze. 
 		S~využitím Matlabovských funkcí \textit{tic} a \textit{toc} byl měřen čas vykonávání funkce, 
 		tento experiment byl třicetkrát zopakován a naměřený čas byl zprůměrován, funkce v~průměru trvala $0,08 s$. 
 		Minimální perioda s~jakou je možné získat obrázky z~kamery je $0,067 s$, proto by bylo potřeba běh funkce
-		ještě více zrychlit, bohužel z~vy\-zkou\-še\-ných algoritmů žádný neodpovídal lépe daným požadavkům. 
+		ještě více zrychlit. Bohužel z~vy\-zkou\-še\-ných algoritmů žádný neodpovídal lépe daným požadavkům. 
 
 		V~první etapě byl pro regulaci implementován pouze jednoduchý P regulátor, což mělo za následek, 
 		že kamera byla vždy pozadu za skutečnou pozicí komára. Přidáním integrační složky se dosáhlo zlepšení tohoto stavu. 
 		Jako další experiment bylo provedeno měření vzdálenosti středu komára od středu obrázku. 
-		Toto měření bylo zopakováno 300 krát a průměrná vzdálenost je $14,3 $ pixelů.
+		Toto měření bylo zopakováno 300 krát a průměrná vzdálenost středů je $14,3 $ pixelů.
 
 
 
@@ -204,8 +204,8 @@ Z~nalezených oblastí je vybrána ta, kterou považujeme za komára. Pro toto
 		Cíl druhé etapy byl naplněn, čas detekce komára v~obraze považujeme za uspokojující, ale pro maximální rychlost smyčky je potřeba výpočet zrychlit. Do třetí etapy bychom rádi prostudovali další literaturu a upravili algoritmus tak, aby běh smyčky byl ještě rychlejší. 
 
 		Dále byl vylepšen regulátor přidáním integrační složky. Do třetí etapy bude regulátor upraven tak, 
-		aby komára dokázal bezpečně sledovat i při vyšších rychlostech.
-		Za tímto účelem bude smyčka doplněna o~predikci pohybu komára. Celý program bude upraven tak, aby efektivně využíval přiděléné prostředky.
+		aby komára dokázal bezpečně sledovat i při vyšších rychlostech letu.
+		Za tímto účelem bude smyčka doplněna o~predikci pohybu komára. Celý program bude upraven tak, aby efektivně využíval přiděléné pro\-středky.
 		Na řadě experimentů bude otestována funkčnost. 
 
 \bibliographystyle{splncs03}
