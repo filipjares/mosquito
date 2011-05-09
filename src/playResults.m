@@ -9,6 +9,8 @@ function playResults(start, stop)
         start = 1;
     end
 
+    figure(5);
+    
     for i=start:stop
         showRecordedImage(i);
         pause(mean(diff(gtime(1:stop))));
