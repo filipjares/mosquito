@@ -22,8 +22,8 @@
 \section{Popis úlohy}
 		Řešená úloha je inspirována článkem Backyard star wars \cite{zadani}, který se zabývá problémem
 		detekce komára ve venkovním prostředí a jeho sestřelení laserovým paprskem. 
-		Pro naše použití byla tato myšlenka modifikována, komár je nahrazen černým čtvercem, který se pohybuje na bílém 
-		pozadí monitoru, namísto laseru je použitá kamera.
+		Pro školní účely byla tato myšlenka pozměněna, komár je nahrazen černým čtvercem, který se pohybuje na bílém
+		pozadí monitoru, namísto laseru je pouze sledován kamerou.
 
 		Poloha kamery se ovládá s použitím dvou modelářských serv a to  
 		natočením okolo svislé osy (změnou azimutu) a natočením okolo vodorovné osy (změnou elevace). Cílem úlohy
@@ -39,15 +39,16 @@
 		detekovat v~obraze komára. 
 	        Další oblastí, která je zastoupena, je řízení. Celý
 		program tvoří zpětnovazební regulační smyčku.
-		Pro lepší funkci predikovat pohybu komára.
+		Pro lepší funkci predikovat pohybu komára.  % FIXME: Tahle věta podle mě nezapadá dobře do okolních vět, takže moc nedává smysl.
 		V~neposlední řadě je v~problému zastoupena robotika, kdy je potřeba pracovat se
 		soustavou serv a počítat transformace souřadnic mezi obrazovkou a souřadným
 		systémem serv.
 
 		\subsection{Popis konstrukce soustavy}
-		Použitá soustava je tvořena LCD monitorem s poměrem stran $4:3$ a kamerou \cite{kamera} umístěnou na pan-til jednotce.
-		Obrázek \ref{fig:soustava} udává konstrukční umístění monitoru a kamery. 
-		Pan-til jednotka je tvořena dvěmi modelářskými servo mechanismy, které umožňují pohyb mezi $x-y stupni$.
+		Použitá soustava je tvořena LCD monitorem s poměrem stran $4:3$ a kamerou umístěnou na pan-tilt jednotce \cite{kamera} .
+		Obrázek \ref{fig:soustava} znázorňuje vzájemné umístění monitoru a kamery.
+		Pan-tilt jednotka je tvořena dvěma modelářskými servomechanismy, které umožňují pohyb mezi $x-y stupni$.
+		% FIXME: To je divná formulace s těmi x-y stupni. Raději popsat/zmínit osy rotace?
 		%TODO: udelat obrazek
 
 	       \subsection{Popis kamery a ovládání}
