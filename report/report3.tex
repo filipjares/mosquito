@@ -39,7 +39,6 @@
 		detekovat v~obraze komára. 
 	        Další oblastí, která je zastoupena, je řízení. Celý
 		program tvoří zpětnovazební regulační smyčku.
-		Pro lepší funkci predikovat pohybu komára.  % FIXME: Tahle věta podle mě nezapadá dobře do okolních vět, takže moc nedává smysl.
 		V~neposlední řadě je v~problému zastoupena robotika, kdy je potřeba pracovat se
 		soustavou serv a počítat transformace souřadnic mezi obrazovkou a souřadným
 		systémem serv.
@@ -59,9 +58,24 @@
 
 \section{Změny specifikace}
 
+		%TODO: vymyslet to
+		Oproti specifikaci úlohy v první zprávě jsme se rozhodli neimplementovat predikci letu komára 
+		a to z důvodu, že testy prokázaly, že dobře naladěný PI regulátor reguluje pozici komára s dostatečnou 
+		přesností 
+		
 \section{Řešení problému}
 
-		Rámec programu je tvořen zpětnovazební regulační smyčkou pro řízení polohy
+		\begin{figure}[!h]
+			\centering
+			 \includegraphics[width=1\columnwidth]{pics/vyvojovy_diagram_programu}
+			 \caption{Vývojový diagram programu}\label{fig:Diagram_programu}
+		\end{figure}
+
+		Program se spouští hlavní funkcí \textit{startMosquitoHunter}, 
+		nejprve se zincializuje kamera a servo mechanismy. 
+		Následně se kamera nastaví na střed obrazovky, kde se vyčkává příletu komára do zorného pole kamery. 		
+		Hlavní funkce \textit{processNextFrame} tvoří rámec programu,
+		který je tvořen zpětnovazební regulační smyčkou pro řízení polohy
 		kamery. Vstupem regulátoru je nejnovější získaný obrázek z~kamery a jeho
 		výstupem je nová poloha kamery. Schématicky je to znázorněno na
 		obrázku~\ref{fig:ridiciSystem}.  Před samotným výpočtem nové polohy kamery
@@ -80,6 +94,56 @@
 		\end{figure}
 
 \section{Implementace}
+
+		Hlavní funkce volá s~využitím callback funkce \textit{processNextFrame}, která zahrnuje hlavní chod
+		programu. Perioda spouštění je nastavena na dvojnásobek snímací frekvence, k~regulaci se používá každý druhý obrázek.
+		%TODO: proc se bere kazdy druhy?
+		\begin{figure}[!h]
+			\centering
+			 \includegraphics[width=1\columnwidth]{pics/zpracovani_obrazu_z_kamery}
+			 \caption{Zpracování obrazu z~kamery\label{fig:zpracovaniObrazu}}
+		\end{figure}
+
+		Funkce \textit{processNextFrame} pracuje s~jedním obrazem získaným z~kamery, vybere z něj pouze zelenou složku.
+		Pro použití jedné složky jsme se rozhodli především proto, že oproti debayerizaci je výpočetně nenáročná a 
+		umožňuje v paměti uchovávat více obrázků. Pro zelenou složku jsme se rozhodli na základě pozorování, 
+		jelikož poskytuje největší kontrast oproti ostatním barevným složkám.
+
+		Takto upravený obraz se předá funkci \textit{findMosquitoInImage} a 
+		následně je porovnán s~empiricky určeným prahem.
+		Tím vznikne binární maska s~oblastmi, které vykazují barevnou podobnost s~hle\-da\-ným komárem. 
+		
+		K~získání polohy komára v~obrazu z~kamery byl použit jednoduchý algoritmus
+		využívající morfologických funkci Matlabovského Image Processing Toolboxu. 
+		V~binární masce jsou nalezeny souvislé oblasti využitím funkce \textit{bwlabel}.
+		Z~těchto oblastí je vybrána ta, kterou považujeme za komára. Pro toto
+		rozhodnutí jsou použity vlastnosti oblastí \textit{MajorAxisLenght} a
+		\textit{Area}. Jsou vyloučeny takové oblasti, jejichž plocha je větší než $3000$
+		pixelů nebo jejichž délka je více než $50$ pixelů. Tyto hodnoty byly nastaveny
+		na základě maximálních parametrů komára a dostatečné rezervy. Ze zbývajících
+		oblastí je vybrána ta, která má největší plochu. Pro tuto oblast je určena
+		poloha středu v~pixelových souřadnicích a tato infromace je návratová hodnota
+		funkce \textit{findMosquitoInImage}. 
+		Tyto hodnoty jsou předány funkci \textit{mosquitoPxPositionToAzimuthAndElevation},
+		která vypočte hodnoty azimutu a elevace. 
+
+	        Regulace, tedy výpočet nové polohy kamery $x_{new}, y_{new}$, je řešena jako PI
+		regulátor v~těle funkce \textit{processNextFrame}. 
+	        Vypočte se rozdíl mezi skutečnou a žádanou hodnotou $err$ a do
+		proměné $sum_e$ se tato odchylka přičítá, při čemž její počáteční hodnota je
+		nulová. Proměné $x, y$ jsou souřadnice aktuální polohy kamery.
+
+		$$x_{new} = x + P\cdot err + I\cdot sum_e$$
+		$$y_{new} = y + P\cdot err + I\cdot sum_e$$
+
+		Pozice kamery je saturována na hodnoty, ve
+		kterých je očekáván komár, tedy na hodnoty odpovídající kraji monitoru.
+
+		Konstanty $P$ a $I$ jsou naladěny pro každý směr zvlášť, byl implementován antiwind-up jev.
+
+\section{Experimentální výsledky}
+
+\section{Diskuze a Závěr}
 
 \bibliographystyle{splncs03}
 \bibliography{report}
