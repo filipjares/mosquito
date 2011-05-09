@@ -43,6 +43,12 @@ vid.FramesAcquiredFcn = @processNextFrame;
 %vid.TimerPeriod = 0.5;
 %vid.TimerFcn = @processNextFrame;
 
-%% Start it
+%% Start the mosquito
+ 
+% obdoba "ostre odevzdavaci verze" (zmensujici se a zrychlujici komar)
+% urlread 'http://147.32.84.120/komar2/komar.cgi?refresh=100&size=20&accel=300&asize=25';
+urlread 'http://147.32.84.120/komar2/komar.cgi?refresh=100&size=20';
+
+%% Start the hunter
 
 start(vid);
