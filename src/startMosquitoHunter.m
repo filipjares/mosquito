@@ -15,12 +15,12 @@ global Px Py Ix Iy;
     %Px=20; %pro refresh 150
     %Py=20;
     %P=25; %pro refresh 100
-    Px=25;
+    Px=20;
     Py=25;
     %Ix=1.6;
     %Iy=1.6;
     Ix=10;
-    Iy=10;
+    Iy=28;
 
 %% Camera and Pan-tilt unit initialization
 
@@ -43,6 +43,12 @@ vid.FramesAcquiredFcn = @processNextFrame;
 %vid.TimerPeriod = 0.5;
 %vid.TimerFcn = @processNextFrame;
 
-%% Start it
+%% Start the mosquito
+ 
+% obdoba "ostre odevzdavaci verze" (zmensujici se a zrychlujici komar)
+% urlread 'http://147.32.84.120/komar2/komar.cgi?refresh=100&size=20&accel=300&asize=25';
+urlread 'http://147.32.84.120/komar2/komar.cgi?refresh=100&size=20';
+
+%% Start the hunter
 
 start(vid);

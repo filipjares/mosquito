@@ -40,10 +40,9 @@ function processNextFrame(vid, event)
     previous_erry = 0;
     integralx = 0;
     integraly = 0;
-    T = 2; %???
     if ~isnan(mAzimuth) & ~isnan(mInclination)
-        integralx = integralx + mAzimuth*T;
-        integraly = integraly + mInclination*T;
+        integralx = integralx + mAzimuth;
+        integraly = integraly + mInclination;
         
         huntStarted = true;
         x = x + mAzimuth * Px + Ix*integralx;     % TODO: remove this magic number
