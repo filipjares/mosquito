@@ -1,6 +1,6 @@
 .PHONY: all gv
 
-all: report.pdf report2.pdf
+all: report3.pdf
 
 gv: report.ps
 	(gv $< &)
