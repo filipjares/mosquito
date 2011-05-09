@@ -11,3 +11,7 @@ report/*.log
 report/*.bbl
 report/*.blg
 report/*.aux
+report/report*.dvi
+report/report*.pdf
+report/*.tex~
+report/*.tex.backup
