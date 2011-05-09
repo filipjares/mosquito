@@ -38,23 +38,30 @@
 		Úloha se skládá z~několika oblastí, především je zde zastoupena oblast
 		po\-čí\-ta\-čo\-vé\-ho vidění, kdy je nutné sejmout obrázek z~kamery, zpracovat ho a
 		detekovat v~obraze komára. 
-	        Další oblastí, která je zastoupena, je řízení. Celý
-		program tvoří zpětnovazební regulační smyčku.
+		Další oblastí, která je zastoupena, je řízení. K zaměření a „sestřelu“ komára je
+		třeba regulovat pohyb kamery.
 		V~neposlední řadě je v~problému zastoupena robotika, kdy je potřeba pracovat se
 		soustavou serv a počítat transformace souřadnic mezi obrazovkou a souřadným
 		systémem serv.
 
-		\subsection{Popis konstrukce soustavy}
-		Použitá soustava je tvořena LCD monitorem s poměrem stran $4:3$ a kamerou umístěnou na pan-tilt jednotce \cite{kamera} .
-		Obrázek \ref{fig:soustava} znázorňuje vzájemné umístění monitoru a kamery.
-		Pan-tilt jednotka je tvořena dvěma modelářskými servomechanismy, které umožňují pohyb mezi $x-y stupni$.
-		% FIXME: To je divná formulace s těmi x-y stupni. Raději popsat/zmínit osy rotace?
-		%TODO: udelat obrazek
+		\begin{figure}[!h]
+			\centering
+			 \includegraphics[width=1\columnwidth]{pics/usporadani_pracoviste}
+			 \caption{Schematické znázornění uspořádání pracoviště „komár“}\label{fig:usporadaniPracoviste}
+		\end{figure}
 
-	       \subsection{Popis kamery a ovládání}
+	\subsection{Popis pracoviště}
+
+		Použité pracoviště „komár“ je tvořeno monitorem a kamerou umístěnou na „pan-tilt“ jednotce, která je namířena
+		na monitor. Obrázek \ref{fig:usporadaniPracoviste} znázorňuje vzájemné uspořádání monitoru a kamery.
+		Pan-tilt jednotka je tvořena dvěma mo\-de\-lář\-ský\-mi servy, která umožňují natáčení kamery okolo svislé osy
+		(změnu azimutu, pan) a okolo vodorovné osy (změnu elevace, tilt).
+		Podrobněji jsou parametry monitoru, kamery a jejich vzájemné konfigurace popsány v \cite{kamera}.
+
+	\subsection{Popis kamery a ovládání}
 	       %TODO: popis
 
-	       \subsection{Popis servo mechanismu a ovládání}
+	\subsection{Popis servo mechanismu a ovládání}
 		%TODO: popis? Tady jen popsat tu jejich funkci nebo? Nejak nevim
 
 \section{Změny specifikace}
