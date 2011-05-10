@@ -164,7 +164,7 @@
 \subsection{PI regulátor}
 
 Na základě pozorování jsme rozdělili regulátor polohy na regulaci v každé ose zvlášť.
-Pro testování jsme si zobrazovali graf pozice komára v jedné ose a pozorovali vliv konstant na kmitání kolem žádadné polohy. 
+Pro testování jsme si zobrazovali graf pozice komára v jedné ose a pozorovali vliv konstant na kmitání kolem žádané polohy. 
 Pro oba směry jsme naladili konstanty tak, abychom získali, co nejlepšího sledování komára.
 
 Pro osu $y$ se nám podařilo získat uspokojivý výsledek, viz \ref{fig:osay}. Konstanty byly naladěny na hodnoty:
@@ -174,15 +174,21 @@ $$I_y = 28$$.
 \begin{figure}[!h]
 	\centering
 	%\includegraphics[width=1\columnwidth]{pics/}
-	\caption{Vývojový diagram programu}\label{fig:osay}
+	\caption{Pozice komára v ose y a průběh integrační sumy}\label{fig:osay}
 \end{figure}
 
 Bohužel musíme konstatovat, že podobně uspokojivého výsledku se nám nepodařilo dosáhnout pro osu $x$. 
 Po příletu komára k okraji monitoru a následném odletu se zvětšila odchylka skutečné od žádané polohy 
 a regulátor se značně rozkmital. 
 
-Tato situace vedla k tomu upravit parametry regulátoru
+Tato situace vedla k tomu upravit parametry regulátoru, což vedlo k zhoršení sledování komára při malých odchylkách, 
+tedy při letu uprostřed obrazovky. Regulátor jsme tedy naladili jako kompromis mezi pozorovanými stavy. 
 
+\begin{figure}[!h]
+	\centering
+	%\includegraphics[width=1\columnwidth]{pics/}
+	\caption{Pozice komára v ose x a průběh integrační sumy}\label{fig:osax}
+\end{figure}
 
 \section{Diskuze a Závěr}
 
