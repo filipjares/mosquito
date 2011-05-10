@@ -142,10 +142,8 @@
 		Pozice kamery je saturována na hodnoty, ve
 		kterých je očekáván komár, tedy na hodnoty odpovídající kraji monitoru.
 
-		Konstanty $P$ a $I$ jsou naladěny pro každý směr zvlášť, byl implementován antiwind-up jev.
+		Konstanty $P$ a $I$ jsou naladěny pro každý směr zvlášť.
 		
-
-
 
 %Funkce \textit{processNextFrame} tvoří zpětnovazební regulační smyčkou pro řízení polohy
 %		kamery. Vstupem regulátoru je nejnovější získaný obrázek z~kamery a jeho
@@ -162,6 +160,26 @@
 %		ukládána, nikoliv zobrazována. Uživatel si snadno tato data přehraje offline.
 
 \section{Experimentální výsledky}
+
+\subsection{PI regulátor}
+
+Na základě pozorování jsme rozdělili zvlášť regulaci polohy kamery v ose $x$ a $y$.  
+Pro testování jsme si zobrazovali graf pozice komára v jedné ose a pozorovali vliv konstant na kmitání kolem žádadné polohy. 
+Pro oba směry jsme naladili konstanty tak, abychom získali, co nejlepšího sledování komára.
+
+Pro osu $y$ se nám podařilo získat uspokojivý výsledek, viz \ref{fig:osay}. Konstanty byly naladěny na hodnoty:
+$$P_y = 25$$
+$$I_y = 28$$.
+
+\begin{figure}[!h]
+	\centering
+	%\includegraphics[width=1\columnwidth]{pics/}
+	\caption{Vývojový diagram programu}\label{fig:osay}
+\end{figure}
+
+Bohužel musíme konstatovat, že podobně uspokojivého výsledku se nám nepodařilo dosáhnout pro osu $x$. 
+Po příletu komára k okraji monitoru a následném odletu se zvětšila odchylka skutečné od žádané polohy 
+a regulátor se značně rozkmital. 
 
 
 \section{Diskuze a Závěr}
