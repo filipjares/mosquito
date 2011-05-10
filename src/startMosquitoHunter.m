@@ -3,6 +3,7 @@
 
 global ser;                         % pan-tilt serial port object
 global x y;                         % current pan-tilt unit position
+global xLimLo xLimHi yLimLo yLimHi; % pan-tilt movement saturation
 
 initLoggingVariables;
 
@@ -24,6 +25,12 @@ global Px Py Ix Iy;
 
 %% Camera and Pan-tilt unit initialization
 
+% camera movement saturation limits:
+xLimLo = 96;
+xLimHi = 155;
+yLimLo = 90;
+yLimHi = 150;
+
 % set initial camera (pan-tilt) position
 x = 121;
 y = 124;
@@ -44,10 +51,13 @@ vid.FramesAcquiredFcn = @processNextFrame;
 %vid.TimerFcn = @processNextFrame;
 
 %% Start the mosquito
- 
+global URL;
+URL = 'http://147.32.84.120/komar1/komar.cgi?refresh=100&size=20&accel=300&asize=25';
+
 % obdoba "ostre odevzdavaci verze" (zmensujici se a zrychlujici komar)
-% urlread 'http://147.32.84.120/komar2/komar.cgi?refresh=100&size=20&accel=300&asize=25';
-urlread 'http://147.32.84.120/komar2/komar.cgi?refresh=100&size=20';
+% urlread URL; % TODO: this does not work, dont' know why
+urlread 'http://147.32.84.120/komar2/komar.cgi?refresh=100&size=20&accel=300&asize=25';
+
 
 %% Start the hunter
 

@@ -15,7 +15,7 @@ plot(gtime, gAzimuth(:,1), 'r')
 grid on
 subplot(3,1,3);
 % plot(gtime, 
-integralX = zeros(180,1)
+integralX = zeros(180,1);
 integralX(1) = gAzimuth(1,1);
 for i = 2:N
     integralX(i) = integralX(i-1) + gAzimuth(i,1);
@@ -35,7 +35,7 @@ plot(gtime, gElevation(:,1), 'r')
 grid on;
 subplot(3,1,3);
 %
-integralY = zeros(180,1)
+integralY = zeros(180,1);
 integralY(1) = gElevation(1,1);
 for i = 2:N
     integralY(i) = integralY(i-1) + gElevation(i,1);
@@ -50,3 +50,5 @@ plot(gPos(:,1), -gPos(:,2));
 hold on;
 plot(gPos(1,1), -gPos(1,2), 'yo');
 hold off;
+set(gca, 'XLim', [xLimLo xLimHi]);
+set(gca, 'YLim', [yLimLo yLimHi]);
