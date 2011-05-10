@@ -18,7 +18,7 @@
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.4\columnwidth]{pics/mosquito}
-	\caption{\cite{komar}}\label{fig:m}
+	%\caption{\cite{komar}}\label{fig:m}
 \end{figure}
 \newpage
 
@@ -33,7 +33,7 @@
 		natočením okolo svislé osy (změnou azimutu) a natočením okolo vodorovné osy (změnou elevace). Cílem úlohy
 		je řídit kameru tak, aby sledovala pohyb komára a zdokumentovala jeho „sestřel“
 		sérií snímků, ve kterých je komár ve středu obrazu z~kamery – uprostřed
-		„záměrného kříže“.
+		„záměrného kříže“. \footnote{Obrázek použitý na titulní stránce jsme převzali z \cite{komar}}
 
 		
 
@@ -173,13 +173,7 @@
 Na základě pozorování jsme rozdělili regulátor polohy na regulaci v každé ose zvlášť.
 Pro testování jsme si zobrazovali graf pozice komára v jedné ose a pozorovali vliv konstant na kmitání kolem žádané polohy. 
 Pro oba směry jsme naladili konstanty tak, abychom získali, co nejlepšího sledování komára.
-Pro osu $y$ se nám podařilo získat uspokojivý výsledek, viz \ref{fig:osay}. 
-
-\begin{figure}[!h]
-	\centering
-	%\includegraphics[width=1\columnwidth]{pics/}
-	\caption{Pozice komára v ose y a průběh integrační sumy}\label{fig:osay}
-\end{figure}
+Pro osu $y$ se nám podařilo získat uspokojivý výsledek. 
 
 Bohužel musíme konstatovat, že podobně uspokojivého výsledku se nám nepodařilo dosáhnout pro osu $x$. 
 Po příletu komára k okraji monitoru a následném odletu se zvětšila odchylka skutečné od žádané polohy 
@@ -187,12 +181,6 @@ a regulátor se značně rozkmital.
 
 Tato situace vedla k tomu upravit parametry regulátoru, což vedlo k zhoršení sledování komára při malých odchylkách, 
 tedy při letu uprostřed obrazovky. Regulátor jsme tedy naladili jako kompromis mezi pozorovanými stavy. 
-
-\begin{figure}[!h]
-	\centering
-	%\includegraphics[width=1\columnwidth]{pics/}
-	\caption{Pozice komára v ose x a průběh integrační sumy}\label{fig:osax}
-\end{figure}
 
 \subsection{Predikce letu komára}
 
