@@ -88,7 +88,7 @@
 			 \caption{Vývojový diagram programu}\label{fig:Diagram_programu}
 		\end{figure}
 
-		Po spuštění programu se nejprve zincializují serva a kamera, 
+		Po spuštění programu se nejprve incializují serva a kamera, 
 		která se nastaví na střed obrazovky.
 		Zde se vyčkává na přílet komára do zorného pole kamery.
 		Jakmile se komár objeví v obraze, spustí se ukládání obrázků do paměti, viz obr. \ref{fig:Diagram_programu}.
@@ -98,15 +98,16 @@
 		Ve~vyčteném obrázku se tedy naleznou všechny tmavé oblasti. 
 		Dále se využívá informace o maximálních rozměrech komára. 
 		Je známo, že maximální velikost komára je $50$ pixelů. 
-		Na základě této informace se zahodí všechny vybrané tmavé oblasti, 
+		Na základě této informace se zahodí všechny tmavé oblasti, 
 		které jsou svou plochou či délkou hlavní osy větší než největší možný komár.
-		Ze zbylých oblastí je vybrána největší, která je prohlášena za komára.
+		Ze~zbylých oblastí je vybrána největší, která je prohlášena za komára.
 		Je nalezen střed a tato informace se dále používá k regulaci kamerového systému.
 
 \subsection{Implementace}
 
-		Hlavní řídicí funkce se volá s využitím tzv. callback funkce, protože nám přišlo vhodné, 
-		aby se perioda zpracování obrazu odvíjela od periody získávání obrázků.		
+		Přišlo nám vhodné, aby se perioda zpracování obrazu odvíjela od periody získá\-vání obrázků,
+		proto byla využita možnost zaregistrovat u videoobjektu, reprezentujícího kameru, callback funkci, 
+		která je automaticky volána po vyčtení urče\-ného počtu obrázků.	
 		K~regulaci se používá každý druhý obrázek a to z důvodů časové náročnosti regu\-lační smyčky.
 
 		Ve vývojovém diagramu (obr. \ref{fig:Diagram_programu}) lze pozorovat, že se zahazuje prvních pět obrázků.
@@ -173,10 +174,10 @@
 
 Na základě pozorování jsme rozdělili regulátor polohy na regulaci v každé ose zvlášť.
 Pro testování jsme si zobrazovali graf pozice komára v jedné ose a pozorovali vliv konstant na kmitání kolem žádané polohy. 
-Pro oba směry jsme naladili konstanty tak, abychom získali, co nejlepšího sledování komára.
-Pro osu $y$ se nám podařilo získat uspokojivý výsledek. 
+Pro oba směry jsme naladili konstanty tak, abychom dosáhli co nejlepšího sledování komára.
+Pro elevaci se nám podařilo získat uspokojivý výsledek. 
 
-Bohužel musíme konstatovat, že podobně uspokojivého výsledku se nám nepodařilo dosáhnout pro osu $x$. 
+Bohužel musíme konstatovat, že podobně uspokojivého výsledku se nám nepodařilo dosáhnout pro řízení azimutu. 
 Po příletu komára k okraji monitoru a následném odletu se zvětšila odchylka skutečné od žádané polohy 
 a regulátor se značně rozkmital. 
 
@@ -215,15 +216,15 @@ ale v tomto přístupu očekáváme problémy s linearitou.
 Úloha se nám z počátku velmi líbila, především proto, že se jednalo o otevřený problém. 
 Bylo čistě na studentovi, jak daný problém vyřeší. 
 V průběhu semestru se ovšem projevilo, že původní výhoda se stala spíše nevýhodou. 
-K úloze na cvičení člověk používal pouze znalosti získané dříve a ztrácel kontakt s probíranou látkou na přednáškách.
+K úloze na cvičení člověk používal pouze znalosti získané dříve a ztrácel kontakt s pro\-bí\-ranou látkou na přednáškách.
 Myslíme, že by bylo lepší ponechat otevřenost problému, ale více ho provázat s problematikou přednášek.
 
 Dále jsme ocenili rezervační systém, ale dvě stanovišťě se ukázala býti nedostačující. 
 Možná by do příště pomohlo, kdyby byla dána k dispozici série testovacích dat. 
-Student by pak mohl pracovat více „offline“ a především v počátku semestru, 
+Student by pak mohl pracovat více „offline“ a především v~počátku semestru, 
 kdy úloha nefungovala, by se studentovi umožnilo na úloze více pracovat.
-Myslíme, že by bylo dobré vyžadovat v první polovině semestru více práce, 
-v tomto období je ještě relativně čas. 
+Myslíme, že by bylo dobré vyžadovat v~první polovině semestru více práce, 
+v~tomto období je ještě relativně čas. 
 Naopak v druhé polovině je student vytížen dalšími projekty.
 
 
