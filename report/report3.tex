@@ -75,10 +75,6 @@
 \section{Změny specifikace}
 
 		%TODO: vymyslet to
-		Oproti specifikaci úlohy v první zprávě jsme se rozhodli neimplementovat predikci letu komára 
-		a to z důvodu, že testy prokázaly, že dobře naladěný PI regulátor reguluje pozici komára s požadovanou 
-		přesností.
-
 		Díky použití pracovišťě číslo dva se neprojevila nelineární závislost otočení kamery na pozici komára. 
 		Dále jsme pozorovali konstantní chování celé dynamické soustavy kamery se servy, tedy jsme ani neřešili 
 		identifikaci soustavy.
@@ -177,10 +173,7 @@
 Na základě pozorování jsme rozdělili regulátor polohy na regulaci v každé ose zvlášť.
 Pro testování jsme si zobrazovali graf pozice komára v jedné ose a pozorovali vliv konstant na kmitání kolem žádané polohy. 
 Pro oba směry jsme naladili konstanty tak, abychom získali, co nejlepšího sledování komára.
-
-Pro osu $y$ se nám podařilo získat uspokojivý výsledek, viz \ref{fig:osay}. Konstanty byly naladěny na hodnoty:
-$$P_y = 25$$
-$$I_y = 28$$.
+Pro osu $y$ se nám podařilo získat uspokojivý výsledek, viz \ref{fig:osay}. 
 
 \begin{figure}[!h]
 	\centering
@@ -200,6 +193,20 @@ tedy při letu uprostřed obrazovky. Regulátor jsme tedy naladili jako kompromi
 	%\includegraphics[width=1\columnwidth]{pics/}
 	\caption{Pozice komára v ose x a průběh integrační sumy}\label{fig:osax}
 \end{figure}
+
+\subsection{Predikce letu komára}
+
+Model komára zachovává fyzikální podstatu letu, zrychluje a zpomaluje s koneč\-ným zrychlením a nemění razantně směr.
+Lze tedy předpokládat, že pohyb komára na obraze je generován určitou funkcí a 
+nová pozice komára lze vypočítat jako taylorův polynom. 
+Rozhodli jsme se pro odhadování nové pozice komára z posledních pěti naměřených hodnot.
+Tuto hodnotu jsme zvolili jako optimum mezi dosažitelnou přesností a časovou náročností výpočtu.
+
+Experimenty poukázaly na dva problémy s tímto základní přístupem. 
+Za prvé jsme došli k závěru, že pohyb komára je zatížen náhodným prvkem, který zhoršuje predikci pohybu.
+Za druhé měla predikce vliv na chování soustavy pouze tehdy, pokud se použil samotný P regulátor. 
+S využitím PI regulátoru predikce nepřinášela žádné významné zlepšení chování systému.
+
 
 \section{Diskuze a Závěr}
 
