@@ -85,21 +85,37 @@
 			 \caption{Vývojový diagram programu}\label{fig:Diagram_programu}
 		\end{figure}
 
+		Po spuštění programu se nejprve zincializují serva a kamera, 
+		která se nastaví na střed obrazovky.
+		Zde se vyčkává do příletu komára do zorného pole kamery.
+		Jakmile se komár objeví v obraze, spustí se ukládání obrázků do pracovního prostoru, viz obr. \ref{fig:Diagram_programu}.
 
-		Program se spouští hlavní funkcí \textit{startMosquitoHunter}, ve které se inicializuje 
-		použití kamery a serv.
-		%Nejprve se zincializuje kamera a servo mechanismy. 
-		%Následně se kamera nastaví na střed obrazovky, kde se vyčkává příletu komára do zorného pole kamery. 
-		Dále se zde volá s~využitím tzv. callback funkce výkoná část \textit{processNextFrame}, která zahrnuje hlavní chod
-		programu. Perioda spouštění je nastavena na dvojnásobek snímací frekvence, k~regulaci se tedy používá každý druhý obrázek a to z důvodů časové náročnosti regulační smyčky.
+		Pro detekci komára v obraze se využívá znalosti řady omezení. 
+		Nejprve se využívá barevné informace, komár je černý a pohybuje se na bílém pozadí.
+		Ve vyčteném obrázku se tedy naleznou všechny tmavé oblasti. 
+		Dále se využívá informace o maximálních rozměrech komára. 
+		Je známo, že maximální velikost komára je $50$ pixelů. 
+		Na základě této informace se zahodí všechny vybrané tmavé oblasti, 
+		které jsou svou plochou či délkou hlavní osy větší než maximální komár.
+		Ze zbylých oblastí je vybrána ta největší, která odpovídá komárovi.
+		Je nalezen střed a tato informace se dále používá k regulaci kamerového systému.
 
-		Funkce \textit{processNextFrame} pracuje s~jedním obrazem získaným z~kamery, vybere z něj pouze zelenou složku.
-		Pro použití jedné složky jsme se rozhodli především proto, že oproti debayerizaci je výpočetně nenáročná a 
+\subsection{Implementace}
+
+		Hlavní řídicí funkce se volá s využitím tzv. callback funkce, protože nám přišlo vhodné, 
+		aby se perioda zpracování obrazu odvíjela od periody získávání obrázků.		
+		K~regulaci se používá každý druhý obrázek a to z důvodů časové náročnosti regu\-lační smyčky.
+
+		Ve vývojovém diagramu \ref{fig:Diagram_programu} lze pozorovat, že se zahazuje prvních pět obrázků.
+		Pro toto opatření jsme se rozhodli proto, 
+		že první obrázky bývají zarušeny chybou při vyčtení obrazu z kamery.
+
+		Při zpracování obrazu a hledání komára používáme pouze zelenou složku,
+		oproti debayerizaci je výpočetně nenáročná a 
 		umožňuje v paměti uchovávat více obrázků. Pro zelenou složku jsme se rozhodli na základě pozorování, 
 		jelikož poskytuje největší kontrast oproti ostatním barevným složkám.
 
-		Takto upravený obraz se předá funkci \textit{findMosquitoInImage} a 
-		následně je porovnán s~empiricky určeným prahem.
+		Takto upravený obraz je následně porovnán s~empiricky určeným prahem.
 		Tím vznikne binární maska s~oblastmi, které vykazují barevnou podobnost s~hle\-da\-ným komárem, viz obr. \ref{fig:komar_obr2}.
 
 		\begin{figure}[!htb]
@@ -111,23 +127,17 @@
 			\caption{Zpracování obrazu pro nalezení polohy komára: (a) obrázek sejmutý kamerou, (b) obrázek po prahování, (c) parametry nalezených oblastí, (d) vyznačená poloha nalezeného komára}
 		\end{figure}
 		
-		K~získání polohy komára v~obrazu z~kamery byl použit jednoduchý algoritmus
-		využívající morfologických funkci Matlabovského Image Processing Toolboxu. 
-		V~binární masce jsou nalezeny souvislé oblasti využitím funkce \textit{bwlabel}.
-		Z~těchto oblastí je vybrána ta, kterou považujeme za komára. Pro toto
-		rozhodnutí jsou použity vlastnosti oblastí: délka hlavní osy a plocha, obr. \ref{fig:komar_obr3}.
-		Jsou vyloučeny takové oblasti, jejichž plocha je větší než $3000$
-		pixelů nebo jejichž délka je více než $50$ pixelů. Tyto hodnoty byly nastaveny
-		na základě maximálních parametrů komára a dostatečné rezervy. Ze zbývajících
-		oblastí je vybrána ta, která má největší plochu. Pro tuto oblast je určena
-		poloha středu v~pixelových souřadnicích a tato infromace je návratová hodnota
-		funkce \textit{findMosquitoInImage}, obr. \ref{fig:komar_obr4}.
-		Tyto hodnoty jsou předány funkci \textit{mosquitoPxPositionToAzimuthAndElevation},
-		která vypočte hodnoty azimutu a elevace. 
+		K~získání polohy komára v~obrazu byl použit jednoduchý algoritmus
+		využíva\-jící morfologických funkci Matlabovského Image Processing Toolboxu. 
+		V~binární masce jsou nalezeny souvislé oblasti.
+		Dále jsou vyloučeny takové oblasti, 
+		jejichž plocha a délka hlavní osy (obr. \ref{fig:komar_obr3}) jsou větší než maximální omezení komára.
+		Ze zbývajících oblastí je vybrána ta, která má největší plochu. Pro tuto oblast je určena
+		poloha středu v~pixelových souřadnicích, obr. \ref{fig:komar_obr4}.
+		Z těchto hodnot se vypočte hodnota azimutu a elevace. 
 
 	        Regulace, tedy výpočet nové polohy kamery $x_{new}, y_{new}$, je řešena jako PI
-		regulátor v~těle funkce \textit{processNextFrame}. 
-	        Vypočte se rozdíl mezi skutečnou a žádanou hodnotou $err$ a do
+		regulátor. Vypočte se rozdíl mezi skutečnou a žádanou hodnotou $err$ a do
 		proměné $sum_e$ se tato odchylka přičítá, při čemž její počáteční hodnota je
 		nulová. Proměné $x, y$ jsou souřadnice aktuální polohy kamery.
 
