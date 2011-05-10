@@ -51,10 +51,13 @@ vid.FramesAcquiredFcn = @processNextFrame;
 %vid.TimerFcn = @processNextFrame;
 
 %% Start the mosquito
- 
+global URL;
+URL = 'http://147.32.84.120/komar1/komar.cgi?refresh=100&size=20&accel=300&asize=25';
+
 % obdoba "ostre odevzdavaci verze" (zmensujici se a zrychlujici komar)
-% urlread 'http://147.32.84.120/komar2/komar.cgi?refresh=100&size=20&accel=300&asize=25';
-urlread 'http://147.32.84.120/komar2/komar.cgi?refresh=100&size=20';
+% urlread URL; % TODO: this does not work, dont' know why
+urlread 'http://147.32.84.120/komar2/komar.cgi?refresh=100&size=20&accel=300&asize=25';
+
 
 %% Start the hunter
 
