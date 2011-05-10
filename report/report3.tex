@@ -210,6 +210,22 @@ S využitím PI regulátoru predikce nepřinášela žádné významné zlepšen
 
 \section{Diskuze a Závěr}
 
+S využitím callback funkce a 
+morfologických funkcí Image Processing Toolboxu jsme dosáhli toho, že zpracování a 
+detekce komára v obraze trvá v průměru pouhých $0,08 s$. 
+Minimální perioda s~jakou je možné získat obrázky z~kamery je $0,067 s$,
+proto se pro regulaci kamery používá každý druhý obrázek.
+
+Pokud bychom měli na úlohu více času, rádi bychom se zaměřili na predikci pohybu komára jiným přístupem.
+Věříme, že by nám pomohla vyřešit problém s PI regulátorem.
+K další přístupům predikce patří například Kalmanův filtr, 
+ale v tomto přístupu očekáváme problémy s linearitou. 
+ 
+\section*{Doporučení pro další cvičení}
+
+Úloha se nám z počátku velmi líbila, především proto, že se jednalo o otevřený problém. 
+Bylo čistě na studentovi, jak daný problém vyřeší.
+
 \bibliographystyle{splncs03}
 \bibliography{report}
 
