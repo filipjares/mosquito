@@ -60,11 +60,17 @@
 		Použita byla USB kamera Chameleon od firmy PointGrey \cite{kameraDatasheet} a na pan-tilt jednotce byly
 		použity dva pohony AI-701 firmy Megarobotics řízené prostřednictvím sběrnice RS-232 \cite{servaManual}.
 
-	\subsection{Popis kamery a ovládání}
-	       %TODO: popis
+	\subsection{Použité softwarové prostředí}
 
-	\subsection{Popis servo mechanismu a ovládání}
-		%TODO: popis? Tady jen popsat tu jejich funkci nebo? Nejak nevim
+		Řídicí program byl implementován v prostředí Matlab. Pro práci s kamerou (periodické vyčítání
+		obrázků z kamery) byl použit Image Acquisition Toolbox \cite{imaq} a při zpracování obrázků
+		byly použity morfologické funkce Image Processing Toolboxu \cite{imageProcessingToolbox}.
+
+	\subsection{Ovládání servomechanismů}
+
+		Pro řízení servomotorů bylo použito standardních funkcí Matlabu pro práci se sériovým rozhraním.
+		Řídicí jednotce pohonů AI-701 je možné zasílat žádané absolutní úhly natočení jednotlivých serv
+		v rozsahu 0-254, který odpovídá přibližně rozsahu 80 úhlových stupňů.
 
 \section{Změny specifikace}
 
