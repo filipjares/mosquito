@@ -11,15 +11,18 @@
 \date{27.4.2011}
 
 \begin{document}
+\pagestyle{empty}
 
 \maketitle
+
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.4\columnwidth]{pics/mosquito}
-	%\caption{}\label{fig:m}
+	\caption{\cite{komar}}\label{fig:m}
 \end{figure}
 \newpage
 
+\pagestyle{plain}
 \section{Popis úlohy}
 		Řešená úloha je inspirována článkem Backyard star wars \cite{zadani}, který se zabývá problémem
 		detekce komára ve venkovním prostředí a jeho sestřelení laserovým paprskem. 
@@ -47,7 +50,7 @@
 		\begin{figure}[!h]
 			\centering
 			 \includegraphics[width=1\columnwidth]{pics/usporadani_pracoviste}
-			 \caption{Schematické znázornění uspořádání pracoviště „komár“}\label{fig:usporadaniPracoviste}
+			 \caption{Schématické znázornění uspořádání pracoviště „komár“}\label{fig:usporadaniPracoviste}
 		\end{figure}
 
 	\subsection{Popis pracoviště}
@@ -74,10 +77,7 @@
 
 \section{Změny specifikace}
 
-		%TODO: vymyslet to
-		Díky použití pracovišťě číslo dva se neprojevila nelineární závislost otočení kamery na pozici komára. 
-		Dále jsme pozorovali konstantní chování celé dynamické soustavy kamery se servy, tedy jsme ani neřešili 
-		identifikaci soustavy.
+		V průběhu řešení nenastaly žádné změny ve specifikaci problému.
 		
 \section{Řešení problému}
 
@@ -94,12 +94,12 @@
 
 		Pro detekci komára v obraze se využívá znalosti řady omezení. 
 		Nejprve se využívá barevné informace, komár je černý a pohybuje se na bílém pozadí.
-		Ve vyčteném obrázku se tedy naleznou všechny tmavé oblasti. 
+		Ve~vyčteném obrázku se tedy naleznou všechny tmavé oblasti. 
 		Dále se využívá informace o maximálních rozměrech komára. 
 		Je známo, že maximální velikost komára je $50$ pixelů. 
 		Na základě této informace se zahodí všechny vybrané tmavé oblasti, 
 		které jsou svou plochou či délkou hlavní osy větší než maximální komár.
-		Ze zbylých oblastí je vybrána ta největší, která odpovídá komárovi.
+		Ze zbylých oblastí je vybrána největší, která odpovídá komárovi.
 		Je nalezen střed a tato informace se dále používá k regulaci kamerového systému.
 
 \subsection{Implementace}
@@ -108,14 +108,14 @@
 		aby se perioda zpracování obrazu odvíjela od periody získávání obrázků.		
 		K~regulaci se používá každý druhý obrázek a to z důvodů časové náročnosti regu\-lační smyčky.
 
-		Ve vývojovém diagramu \ref{fig:Diagram_programu} lze pozorovat, že se zahazuje prvních pět obrázků.
+		Ve vývojovém diagramu (obr. \ref{fig:Diagram_programu}) lze pozorovat, že se zahazuje prvních pět obrázků.
 		Pro toto opatření jsme se rozhodli proto, 
 		že první obrázky bývají zarušeny chybou při vyčtení obrazu z kamery.
 
 		Při zpracování obrazu a hledání komára používáme pouze zelenou složku,
 		oproti debayerizaci je výpočetně nenáročná a 
 		umožňuje v paměti uchovávat více obrázků. Pro zelenou složku jsme se rozhodli na základě pozorování, 
-		jelikož poskytuje největší kontrast oproti ostatním barevným složkám.
+		neboť poskytuje největší kontrast oproti ostatním barevným složkám.
 
 		Takto upravený obraz je následně porovnán s~empiricky určeným prahem.
 		Tím vznikne binární maska s~oblastmi, které vykazují barevnou podobnost s~hle\-da\-ným komárem, viz obr. \ref{fig:komar_obr2}.
@@ -126,7 +126,7 @@
 			\subfloat[\label{fig:komar_obr3}]{\includegraphics[width=0.49\columnwidth]{pics/delka_hlavni_osy_a_plocha_oblasti}}
 			\subfloat[\label{fig:komar_obr4}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-3}}
 			%\caption{Zpracování obrazu pro nalezení polohy komára: \subref{fig:komar_obr1} obrázek sejmutý kamerou, \subref{fig:komar_obr2} obrázek po prahování, \subref{fig:komar_obr3} parametry nalezených oblastí, \subref{fig:komar_obr4} vyznačená poloha nalezeného komára}
-			\caption{Zpracování obrazu pro nalezení polohy komára: (a) obrázek sejmutý kamerou, (b) obrázek po prahování, (c) parametry nalezených oblastí, (d) vyznačená poloha nalezeného komára}
+			\caption{Zpracování obrazu pro nalezení polohy komára: (a) obrázek vyčtený kamerou, (b) obrázek po prahování, (c) parametry nalezených oblastí, (d) vyznačená poloha nalezeného komára}
 		\end{figure}
 		
 		K~získání polohy komára v~obrazu byl použit jednoduchý algoritmus
