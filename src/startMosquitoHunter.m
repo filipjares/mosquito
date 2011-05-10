@@ -3,6 +3,7 @@
 
 global ser;                         % pan-tilt serial port object
 global x y;                         % current pan-tilt unit position
+global xLimLo xLimHi yLimLo yLimHi; % pan-tilt movement saturation
 
 initLoggingVariables;
 
@@ -23,6 +24,12 @@ global Px Py Ix Iy;
     Iy=28;
 
 %% Camera and Pan-tilt unit initialization
+
+% camera movement saturation limits:
+xLimLo = 96;
+xLimHi = 155;
+yLimLo = 90;
+yLimHi = 150;
 
 % set initial camera (pan-tilt) position
 x = 121;

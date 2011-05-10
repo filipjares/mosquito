@@ -50,3 +50,5 @@ plot(gPos(:,1), -gPos(:,2));
 hold on;
 plot(gPos(1,1), -gPos(1,2), 'yo');
 hold off;
+set(gca, 'XLim', [xLimLo xLimHi]);
+set(gca, 'YLim', [yLimLo yLimHi]);

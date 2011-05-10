@@ -12,6 +12,8 @@ function processNextFrame(vid, event)
     global integralx;            
     global integraly; 
     
+    global xLimLo xLimHi yLimLo yLimHi; % pan-tilt movement saturation
+    
     global Px Py Ix Iy;
     
     % take picture
@@ -50,17 +52,17 @@ function processNextFrame(vid, event)
         previous_errx = mAzimuth;
         previous_erry = mInclination;
         %Omezeni vystupu
-        if(x<96)
-            x=96;
+        if(x<xLimLo)
+            x=xLimLo;
         end
-        if(x>155)
-            x=155;
+        if(x>xLimHi)
+            x=xLimHi;
         end
-        if(y<90)
-            y=90;
+        if(y<yLimLo)
+            y=yLimLo;
         end
-        if(y>150)
-            y=150;
+        if(y>yLimHi)
+            y=yLimHi;
         end
                 
                    
