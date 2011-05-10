@@ -5,6 +5,7 @@
 \usepackage[czech]{babel}
 \usepackage{graphicx}
 \usepackage{subfig}
+\usepackage{icomma}
 
 \title{Zpráva k~seminární úloze z~předmětu\\ Inteligentní robotika \\ {\small Závěrečná zpráva}}
 \author{Filip Jareš, Lenka Mudrová}
@@ -50,7 +51,7 @@
 		\begin{figure}[!h]
 			\centering
 			 \includegraphics[width=1\columnwidth]{pics/usporadani_pracoviste}
-			 \caption{Schématické znázornění uspořádání pracoviště „komár“}\label{fig:usporadaniPracoviste}
+			 \caption{Schematické znázornění uspořádání pracoviště „komár“}\label{fig:usporadaniPracoviste}
 		\end{figure}
 
 	\subsection{Popis pracoviště}
@@ -89,8 +90,8 @@
 
 		Po spuštění programu se nejprve zincializují serva a kamera, 
 		která se nastaví na střed obrazovky.
-		Zde se vyčkává do příletu komára do zorného pole kamery.
-		Jakmile se komár objeví v obraze, spustí se ukládání obrázků do pracovního prostoru, viz obr. \ref{fig:Diagram_programu}.
+		Zde se vyčkává na přílet komára do zorného pole kamery.
+		Jakmile se komár objeví v obraze, spustí se ukládání obrázků do paměti, viz obr. \ref{fig:Diagram_programu}.
 
 		Pro detekci komára v obraze se využívá znalosti řady omezení. 
 		Nejprve se využívá barevné informace, komár je černý a pohybuje se na bílém pozadí.
@@ -98,8 +99,8 @@
 		Dále se využívá informace o maximálních rozměrech komára. 
 		Je známo, že maximální velikost komára je $50$ pixelů. 
 		Na základě této informace se zahodí všechny vybrané tmavé oblasti, 
-		které jsou svou plochou či délkou hlavní osy větší než maximální komár.
-		Ze zbylých oblastí je vybrána největší, která odpovídá komárovi.
+		které jsou svou plochou či délkou hlavní osy větší než největší možný komár.
+		Ze zbylých oblastí je vybrána největší, která je prohlášena za komára.
 		Je nalezen střed a tato informace se dále používá k regulaci kamerového systému.
 
 \subsection{Implementace}
@@ -200,8 +201,8 @@ S využitím PI regulátoru predikce nepřinášela žádné významné zlepšen
 
 S využitím callback funkce a 
 morfologických funkcí Image Processing Toolboxu jsme dosáhli toho, že zpracování a 
-detekce komára v obraze trvá v průměru pouhých $0,08 s$. 
-Minimální perioda s~jakou je možné získat obrázky z~kamery je $0,067 s$,
+detekce komára v obraze trvá v průměru pouhých $0,084$\,s. 
+Minimální perioda s~jakou je možné získat obrázky z~kamery je $0,067$\,s,
 proto se pro regulaci kamery používá každý druhý obrázek.
 
 Pokud bychom měli na úlohu více času, rádi bychom se zaměřili na predikci pohybu komára jiným přístupem.
