@@ -57,6 +57,8 @@
 		Pan-tilt jednotka je tvořena dvěma mo\-de\-lář\-ský\-mi servy, která umožňují natáčení kamery okolo svislé osy
 		(změnu azimutu, pan) a okolo vodorovné osy (změnu elevace, tilt).
 		Podrobněji jsou parametry monitoru, kamery a jejich vzájemné konfigurace popsány v \cite{kamera}.
+		Použita byla USB kamera Chameleon od firmy PointGrey \cite{kameraDatasheet} a na pan-tilt jednotce byly
+		použity dva pohony AI-701 firmy Megarobotics řízené prostřednictvím sběrnice RS-232 \cite{servaManual}.
 
 	\subsection{Popis kamery a ovládání}
 	       %TODO: popis
@@ -101,19 +103,11 @@
 		Tím vznikne binární maska s~oblastmi, které vykazují barevnou podobnost s~hle\-da\-ným komárem, viz obr. \ref{fig:komar_obr2}.
 
 		\begin{figure}[!htb]
-		  \subfloat[\label{fig:komar_obr1}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-1.jpg}}
-		  \hfill
-		  \subfloat[\label{fig:komar_obr2}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-2.jpg}}
-
-		  \vfill
-		%\end{figure}
-		
-		%\begin{figure}[!htb]
-		    \subfloat[\label{fig:komar_obr3}]{\includegraphics[width=0.49\columnwidth]{pics/delka_hlavni_osy_a_plocha_oblasti}}
-		    \hfill
-		    \subfloat[\label{fig:komar_obr4}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-3.jpg}}
-		    %\caption{Souvislé oblasti s parametrem plocha a hlavní osa; komár se středem}
-		    \caption{Postup nalezení komára v obraze sejmutém z kamery}
+			\subfloat[\label{fig:komar_obr1}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-1}}
+			\subfloat[\label{fig:komar_obr2}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-2}} \\
+			\subfloat[\label{fig:komar_obr3}]{\includegraphics[width=0.49\columnwidth]{pics/delka_hlavni_osy_a_plocha_oblasti}}
+			\subfloat[\label{fig:komar_obr4}]{\includegraphics[width=0.49\columnwidth]{pics/zpracovani_obrazu-3}}
+			\caption{Zpracování obrazu pro nalezení polohy komára: \subref{fig:komar_obr1} obrázek sejmutý kamerou, \subref{fig:komar_obr2} obrázek po prahování, \subref{fig:komar_obr3} parametry nalezených oblastí, \subref{fig:komar_obr4} vyznačená poloha nalezeného komára}
 		\end{figure}
 		
 		K~získání polohy komára v~obrazu z~kamery byl použit jednoduchý algoritmus
